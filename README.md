@@ -14,7 +14,7 @@ $ sudo apt install python3-pip
 ```
 
 ```sh
-$ pip3 install jupyterlab pandas numpy matplotlib seaborn
+$ pip3 install jupyterlab pandas numpy matplotlib seaborn geopandas descartes
 ```
 
 ## Uso
@@ -25,4 +25,10 @@ $ jupyter lab
 
 ## Mantenedores
 
+- [@diaznicolasandres1](https://github.com/diaznicolasandres1)
 - [@tomasBustamante](https://github.com/tomasBustamante)
+- [@FacuMastri](https://github.com/FacuMastri)
+
+## Enlaces útiles
+
+- [Cookiecutter Data Science](https://drivendata.github.io/cookiecutter-data-science/)
