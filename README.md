@@ -14,7 +14,7 @@ $ sudo apt install python3-pip
 ```
 
 ```sh
-$ pip3 install jupyterlab pandas numpy matplotlib seaborn geopandas descartes
+$ pip3 install jupyterlab pandas numpy matplotlib seaborn geopandas descartes wordcloud
 ```
 
 ## Uso
