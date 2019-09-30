@@ -1,0 +1,2900 @@
+
+    
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    \usepackage[breakable]{tcolorbox}
+    \tcbset{nobeforeafter} % prevents tcolorboxes being placing in paragraphs
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{03-exploracion-por-propiedades-provincias}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \newcommand{\prompt}[4]{
+        \llap{{\color{#2}[#3]: #4}}\vspace{-1.25em}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{22}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k}{as} \PY{n+nn}{sns}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{ticker} \PY{k}{as} \PY{n+nn}{tkr}
+\PY{k+kn}{from} \PY{n+nn}{wordcloud} \PY{k}{import} \PY{n}{WordCloud}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{style}\PY{o}{.}\PY{n}{use}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{default}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{rcParams}\PY{o}{.}\PY{n}{update}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{figure.max\PYZus{}open\PYZus{}warning}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+m+mi}{0}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{pd}\PY{o}{.}\PY{n}{options}\PY{o}{.}\PY{n}{display}\PY{o}{.}\PY{n}{float\PYZus{}format} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZob{}:20,.2f\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}
+\PY{n}{sns}\PY{o}{.}\PY{n}{set}\PY{p}{(}\PY{n}{style}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{whitegrid}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../data/train.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{low\PYZus{}memory}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PY{n}{index\PYZus{}col}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{parse\PYZus{}dates}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fecha}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{22}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                                                   titulo  \textbackslash{}
+id
+254099                                  depto. tipo a-402
+53461                      condominio horizontal en venta
+247984              casa en venta urbi 3 recamaras tonala
+209067  casa sola en toluca zinacantepec con credito i{\ldots}
+185997                                     paseos del sol
+
+                                              descripcion     tipodepropiedad  \textbackslash{}
+id
+254099  depto. interior de 80.15m2, consta de sala com{\ldots}         Apartamento
+53461   <p>entre sonora y guerrero, atr\&aacute;s del h{\ldots}  Casa en condominio
+247984  descripcion \textbackslash{}nla mejor ubicacion residencial e{\ldots}                Casa
+209067  casa en privada con caseta de vigilancia casas{\ldots}                Casa
+185997  bonito departamento en excelentes condiciones {\ldots}         Apartamento
+
+                              direccion                  ciudad  \textbackslash{}
+id
+254099  Avenida Division del Norte 2005           Benito Juárez
+53461                        AV. MEXICO  La Magdalena Contreras
+247984                      Urbi Tonala                  Tonalá
+209067    IGNACIO MANUEL ALTAMIRANO 128            Zinacantepec
+185997                  PASEOS DEL SOL                  Zapopan
+
+               provincia           antiguedad         habitaciones  \textbackslash{}
+id
+254099  Distrito Federal                  nan                 2.00
+53461   Distrito Federal                10.00                 3.00
+247984           Jalisco                 5.00                 3.00
+209067    Edo. de México                 1.00                 2.00
+185997           Jalisco                10.00                 2.00
+
+                    garages                banos  {\ldots}               idzona  \textbackslash{}
+id                                                {\ldots}
+254099                 1.00                 2.00  {\ldots}            23,533.00
+53461                  2.00                 2.00  {\ldots}            24,514.00
+247984                 2.00                 2.00  {\ldots}            48,551.00
+209067                 1.00                 1.00  {\ldots}            53,666.00
+185997                 1.00                 1.00  {\ldots}            47,835.00
+
+                        lat                  lng      fecha  \textbackslash{}
+id
+254099                  nan                  nan 2015-08-23
+53461                 19.31               -99.23 2013-06-28
+247984                  nan                  nan 2015-10-17
+209067                19.30               -99.69 2012-03-09
+185997                  nan                  nan 2016-06-07
+
+                   gimnasio        usosmultiples              piscina  \textbackslash{}
+id
+254099                 0.00                 0.00                 0.00
+53461                  0.00                 0.00                 0.00
+247984                 0.00                 0.00                 0.00
+209067                 0.00                 0.00                 0.00
+185997                 0.00                 0.00                 0.00
+
+           escuelascercanas  centroscomercialescercanos               precio
+id
+254099                 0.00                        0.00         2,273,000.00
+53461                  1.00                        1.00         3,600,000.00
+247984                 0.00                        0.00         1,200,000.00
+209067                 1.00                        1.00           650,000.00
+185997                 0.00                        0.00         1,150,000.00
+
+[5 rows x 22 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{23}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Renombro los atributos}
+\PY{n}{df}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipodepropiedad}\PY{l+s+s2}{\PYZdq{}} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{metrostotales}\PY{l+s+s2}{\PYZdq{}} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{metros\PYZus{}totales}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{metroscubiertos}\PY{l+s+s2}{\PYZdq{}} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{metros\PYZus{}cubiertos}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PYZbs{}
+                   \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{usosmultiples}\PY{l+s+s2}{\PYZdq{}} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{usos\PYZus{}multiples}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{escuelascercanas}\PY{l+s+s2}{\PYZdq{}} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{escuelas\PYZus{}cercanas}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PYZbs{}
+                   \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{centroscomercialescercanos}\PY{l+s+s2}{\PYZdq{}} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{centros\PYZus{}comerciales\PYZus{}cercanos}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{23}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                                                   titulo  \textbackslash{}
+id
+254099                                  depto. tipo a-402
+53461                      condominio horizontal en venta
+247984              casa en venta urbi 3 recamaras tonala
+209067  casa sola en toluca zinacantepec con credito i{\ldots}
+185997                                     paseos del sol
+
+                                              descripcion   tipo\_de\_propiedad  \textbackslash{}
+id
+254099  depto. interior de 80.15m2, consta de sala com{\ldots}         Apartamento
+53461   <p>entre sonora y guerrero, atr\&aacute;s del h{\ldots}  Casa en condominio
+247984  descripcion \textbackslash{}nla mejor ubicacion residencial e{\ldots}                Casa
+209067  casa en privada con caseta de vigilancia casas{\ldots}                Casa
+185997  bonito departamento en excelentes condiciones {\ldots}         Apartamento
+
+                              direccion                  ciudad  \textbackslash{}
+id
+254099  Avenida Division del Norte 2005           Benito Juárez
+53461                        AV. MEXICO  La Magdalena Contreras
+247984                      Urbi Tonala                  Tonalá
+209067    IGNACIO MANUEL ALTAMIRANO 128            Zinacantepec
+185997                  PASEOS DEL SOL                  Zapopan
+
+               provincia           antiguedad         habitaciones  \textbackslash{}
+id
+254099  Distrito Federal                  nan                 2.00
+53461   Distrito Federal                10.00                 3.00
+247984           Jalisco                 5.00                 3.00
+209067    Edo. de México                 1.00                 2.00
+185997           Jalisco                10.00                 2.00
+
+                    garages                banos  {\ldots}               idzona  \textbackslash{}
+id                                                {\ldots}
+254099                 1.00                 2.00  {\ldots}            23,533.00
+53461                  2.00                 2.00  {\ldots}            24,514.00
+247984                 2.00                 2.00  {\ldots}            48,551.00
+209067                 1.00                 1.00  {\ldots}            53,666.00
+185997                 1.00                 1.00  {\ldots}            47,835.00
+
+                        lat                  lng      fecha  \textbackslash{}
+id
+254099                  nan                  nan 2015-08-23
+53461                 19.31               -99.23 2013-06-28
+247984                  nan                  nan 2015-10-17
+209067                19.30               -99.69 2012-03-09
+185997                  nan                  nan 2016-06-07
+
+                   gimnasio       usos\_multiples              piscina  \textbackslash{}
+id
+254099                 0.00                 0.00                 0.00
+53461                  0.00                 0.00                 0.00
+247984                 0.00                 0.00                 0.00
+209067                 0.00                 0.00                 0.00
+185997                 0.00                 0.00                 0.00
+
+          escuelas\_cercanas  centros\_comerciales\_cercanos               precio
+id
+254099                 0.00                          0.00         2,273,000.00
+53461                  1.00                          1.00         3,600,000.00
+247984                 0.00                          0.00         1,200,000.00
+209067                 1.00                          1.00           650,000.00
+185997                 0.00                          0.00         1,150,000.00
+
+[5 rows x 22 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \subsubsection{Resumen de las propiedades del set de
+datos}\label{resumen-de-las-propiedades-del-set-de-datos}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{67}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{El set de datos tiene una forma de}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{df}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+El set de datos tiene una forma de (240000, 22)
+\end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{68}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Resumen de algunas estadisticas}
+\PY{n}{df}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{68}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                antiguedad         habitaciones              garages  \textbackslash{}
+count           196,445.00           217,529.00           202,235.00
+mean                  8.12                 2.90                 1.55
+std                   9.55                 0.90                 0.85
+min                   0.00                 1.00                 0.00
+25\%                   0.00                 2.00                 1.00
+50\%                   5.00                 3.00                 2.00
+75\%                  10.00                 3.00                 2.00
+max                  80.00                10.00                 3.00
+
+                     banos     metros\_cubiertos       metros\_totales  \textbackslash{}
+count           213,779.00           222,600.00           188,533.00
+mean                  2.13               174.02               176.77
+std                   0.91                98.15                94.43
+min                   1.00                15.00                15.00
+25\%                   1.00                90.00               102.00
+50\%                   2.00               153.00               155.00
+75\%                   3.00               240.00               238.00
+max                   4.00               439.00               439.00
+
+                    idzona                  lat                  lng  \textbackslash{}
+count           211,379.00           116,512.00           116,512.00
+mean          2,423,467.82                20.70               -99.51
+std          10,567,938.36                 3.14                 9.74
+min                  22.00              -100.89              -125.86
+25\%              24,890.00                19.36              -100.98
+50\%              56,383.00                19.54               -99.24
+75\%              87,838.00                20.74               -99.13
+max          50,003,999.00                83.03               121.04
+
+                  gimnasio       usos\_multiples              piscina  \textbackslash{}
+count           240,000.00           240,000.00           240,000.00
+mean                  0.06                 0.06                 0.09
+std                   0.24                 0.23                 0.28
+min                   0.00                 0.00                 0.00
+25\%                   0.00                 0.00                 0.00
+50\%                   0.00                 0.00                 0.00
+75\%                   0.00                 0.00                 0.00
+max                   1.00                 1.00                 1.00
+
+         escuelas\_cercanas  centros\_comerciales\_cercanos               precio
+count           240,000.00                    240,000.00           240,000.00
+mean                  0.44                          0.40         2,530,838.35
+std                   0.50                          0.49         2,152,551.80
+min                   0.00                          0.00           310,000.00
+25\%                   0.00                          0.00           952,772.50
+50\%                   0.00                          0.00         1,850,000.00
+75\%                   1.00                          1.00         3,390,000.00
+max                   1.00                          1.00        12,525,000.00
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{69}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Cantidad de provincias}
+\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{provincia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{69}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+array(['Distrito Federal', 'Jalisco', 'Edo. de México', 'Oaxaca',
+       'Quintana Roo', 'Colima', 'San luis Potosí', 'Nuevo León',
+       'Querétaro', 'Tamaulipas', 'Puebla', 'Yucatán', 'Morelos',
+       'Guerrero', 'Tabasco', 'Guanajuato', 'Hidalgo', 'Veracruz',
+       'Chihuahua', 'Aguascalientes', 'Sonora', 'Michoacán',
+       'Baja California Norte', 'Baja California Sur', 'Coahuila',
+       'Durango', 'Sinaloa', 'Chiapas', 'Nayarit', 'Tlaxcala', 'Campeche',
+       'Zacatecas', nan], dtype=object)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{70}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Cantidad de distintos tipos de propiedad}
+\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{nunique}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{70}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+24
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{71}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Cantidad de banios}
+\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{banos}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{71}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+2.00    87683
+1.00    58173
+3.00    49365
+4.00    18558
+Name: banos, dtype: int64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{72}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Cantidad de garages}
+\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{garages}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{72}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+2.00    94167
+1.00    59464
+0.00    26926
+3.00    21678
+Name: garages, dtype: int64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{73}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Cantidad de habitaciones}
+\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{habitaciones}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{73}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+ 3.00    121887
+ 2.00     57808
+ 4.00     25068
+ 1.00      5069
+ 5.00      4596
+ 6.00      1669
+ 7.00       539
+ 8.00       398
+10.00       316
+ 9.00       179
+Name: habitaciones, dtype: int64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{74}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Cuantas propiedades tienen SUM}
+\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{usos\PYZus{}multiples}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{74}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.00    226778
+1.00     13222
+Name: usos\_multiples, dtype: int64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{75}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Cuantas propiedades tienen gimnasio}
+\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gimnasio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{75}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.00    225006
+1.00     14994
+Name: gimnasio, dtype: int64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{76}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Cuantas propiedades tienen piscina}
+\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{piscina}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{76}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+0.00    219028
+1.00     20972
+Name: piscina, dtype: int64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \subsection{Analisis general a nivel
+provincial}\label{analisis-general-a-nivel-provincial}
+
+    \paragraph{Cantidad de publicaciones/propiedades segun
+provincia}\label{cantidad-de-publicacionespropiedades-segun-provincia}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{77}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{cantidad\PYZus{}prop\PYZus{}por\PYZus{}provincia} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{provincia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{barplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{cantidad\PYZus{}prop\PYZus{}por\PYZus{}provincia}\PY{o}{.}\PY{n}{values}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{n}{cantidad\PYZus{}prop\PYZus{}por\PYZus{}provincia}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{orient}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{h}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de propiedades por provincia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{18}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de propiedades}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Nombre de provincia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{77}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0, 0.5, 'Nombre de provincia')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_15_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Cantidad de cada tipo de propiedad por
+provincia}\label{cantidad-de-cada-tipo-de-propiedad-por-provincia}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{tipos\PYZus{}por\PYZus{}provincia} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{provincia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{agg}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{count}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{tipos\PYZus{}por\PYZus{}provincia\PYZus{}unstacked} \PY{o}{=} \PY{n}{tipos\PYZus{}por\PYZus{}provincia}\PY{o}{.}\PY{n}{unstack}\PY{p}{(}\PY{n}{level}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{tipos\PYZus{}por\PYZus{}provincia\PYZus{}unstacked}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{12}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                         tipo\_de\_propiedad                       \textbackslash{}
+tipo\_de\_propiedad              Apartamento     Bodega comercial
+provincia
+Aguascalientes                       47.00                 7.00
+Baja California Norte               196.00                 4.00
+Baja California Sur                  82.00                 2.00
+Campeche                              7.00                 1.00
+Chiapas                              52.00                 8.00
+
+                                                                 \textbackslash{}
+tipo\_de\_propiedad                     Casa   Casa en condominio
+provincia
+Aguascalientes                    1,340.00               197.00
+Baja California Norte             2,769.00               166.00
+Baja California Sur               1,473.00                34.00
+Campeche                            210.00                11.00
+Chiapas                             903.00                14.00
+
+                                                                    \textbackslash{}
+tipo\_de\_propiedad        Casa uso de suelo Departamento Compartido
+provincia
+Aguascalientes                        6.00                    0.00
+Baja California Norte                 2.00                    5.00
+Baja California Sur                   5.00                    0.00
+Campeche                              1.00                    0.00
+Chiapas                               4.00                    0.00
+
+                                                                 \textbackslash{}
+tipo\_de\_propiedad                   Duplex             Edificio
+provincia
+Aguascalientes                        0.00                 6.00
+Baja California Norte                23.00                 0.00
+Baja California Sur                   2.00                 4.00
+Campeche                              0.00                 1.00
+Chiapas                               1.00                13.00
+
+                                                                 {\ldots}  \textbackslash{}
+tipo\_de\_propiedad                   Garage            Hospedaje  {\ldots}
+provincia                                                        {\ldots}
+Aguascalientes                        0.00                 0.00  {\ldots}
+Baja California Norte                 0.00                 0.00  {\ldots}
+Baja California Sur                   0.00                 0.00  {\ldots}
+Campeche                              0.00                 1.00  {\ldots}
+Chiapas                               0.00                 0.00  {\ldots}
+
+                                                                 \textbackslash{}
+tipo\_de\_propiedad                     Lote      Nave industrial
+provincia
+Aguascalientes                        0.00                 1.00
+Baja California Norte                 0.00                 1.00
+Baja California Sur                   0.00                 0.00
+Campeche                              0.00                 0.00
+Chiapas                               0.00                 0.00
+
+                                                                 \textbackslash{}
+tipo\_de\_propiedad        Oficina comercial                Otros
+provincia
+Aguascalientes                        3.00                 0.00
+Baja California Norte                 0.00                 0.00
+Baja California Sur                   1.00                 0.00
+Campeche                              0.00                 0.00
+Chiapas                               5.00                 0.00
+
+                                                                 \textbackslash{}
+tipo\_de\_propiedad        Quinta Vacacional               Rancho
+provincia
+Aguascalientes                        7.00                 0.00
+Baja California Norte                 2.00                 3.00
+Baja California Sur                   1.00                 1.00
+Campeche                              1.00                 0.00
+Chiapas                               3.00                 3.00
+
+                                                                 \textbackslash{}
+tipo\_de\_propiedad                  Terreno    Terreno comercial
+provincia
+Aguascalientes                       86.00                10.00
+Baja California Norte                24.00                 4.00
+Baja California Sur                  52.00                20.00
+Campeche                             20.00                 1.00
+Chiapas                             100.00                 0.00
+
+
+tipo\_de\_propiedad       Terreno industrial                Villa
+provincia
+Aguascalientes                        0.00                 5.00
+Baja California Norte                 0.00                 2.00
+Baja California Sur                   0.00                 1.00
+Campeche                              0.00                 0.00
+Chiapas                               0.00                 1.00
+
+[5 rows x 24 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{tipos\PYZus{}por\PYZus{}provincia\PYZus{}unstacked}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{n}{tipos\PYZus{}por\PYZus{}provincia\PYZus{}unstacked}\PY{o}{.}\PY{n}{columns}\PY{o}{.}\PY{n}{get\PYZus{}level\PYZus{}values}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{tipos\PYZus{}por\PYZus{}provincia\PYZus{}unstacked}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{13}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+tipo\_de\_propiedad              Apartamento     Bodega comercial  \textbackslash{}
+provincia
+Aguascalientes                       47.00                 7.00
+Baja California Norte               196.00                 4.00
+Baja California Sur                  82.00                 2.00
+Campeche                              7.00                 1.00
+Chiapas                              52.00                 8.00
+
+tipo\_de\_propiedad                     Casa   Casa en condominio  \textbackslash{}
+provincia
+Aguascalientes                    1,340.00               197.00
+Baja California Norte             2,769.00               166.00
+Baja California Sur               1,473.00                34.00
+Campeche                            210.00                11.00
+Chiapas                             903.00                14.00
+
+tipo\_de\_propiedad        Casa uso de suelo  Departamento Compartido  \textbackslash{}
+provincia
+Aguascalientes                        6.00                     0.00
+Baja California Norte                 2.00                     5.00
+Baja California Sur                   5.00                     0.00
+Campeche                              1.00                     0.00
+Chiapas                               4.00                     0.00
+
+tipo\_de\_propiedad                   Duplex             Edificio  \textbackslash{}
+provincia
+Aguascalientes                        0.00                 6.00
+Baja California Norte                23.00                 0.00
+Baja California Sur                   2.00                 4.00
+Campeche                              0.00                 1.00
+Chiapas                               1.00                13.00
+
+tipo\_de\_propiedad                   Garage            Hospedaje  {\ldots}  \textbackslash{}
+provincia                                                        {\ldots}
+Aguascalientes                        0.00                 0.00  {\ldots}
+Baja California Norte                 0.00                 0.00  {\ldots}
+Baja California Sur                   0.00                 0.00  {\ldots}
+Campeche                              0.00                 1.00  {\ldots}
+Chiapas                               0.00                 0.00  {\ldots}
+
+tipo\_de\_propiedad                     Lote      Nave industrial  \textbackslash{}
+provincia
+Aguascalientes                        0.00                 1.00
+Baja California Norte                 0.00                 1.00
+Baja California Sur                   0.00                 0.00
+Campeche                              0.00                 0.00
+Chiapas                               0.00                 0.00
+
+tipo\_de\_propiedad        Oficina comercial                Otros  \textbackslash{}
+provincia
+Aguascalientes                        3.00                 0.00
+Baja California Norte                 0.00                 0.00
+Baja California Sur                   1.00                 0.00
+Campeche                              0.00                 0.00
+Chiapas                               5.00                 0.00
+
+tipo\_de\_propiedad        Quinta Vacacional               Rancho  \textbackslash{}
+provincia
+Aguascalientes                        7.00                 0.00
+Baja California Norte                 2.00                 3.00
+Baja California Sur                   1.00                 1.00
+Campeche                              1.00                 0.00
+Chiapas                               3.00                 3.00
+
+tipo\_de\_propiedad                  Terreno    Terreno comercial  \textbackslash{}
+provincia
+Aguascalientes                       86.00                10.00
+Baja California Norte                24.00                 4.00
+Baja California Sur                  52.00                20.00
+Campeche                             20.00                 1.00
+Chiapas                             100.00                 0.00
+
+tipo\_de\_propiedad       Terreno industrial                Villa
+provincia
+Aguascalientes                        0.00                 5.00
+Baja California Norte                 0.00                 2.00
+Baja California Sur                   0.00                 1.00
+Campeche                              0.00                 0.00
+Chiapas                               0.00                 1.00
+
+[5 rows x 24 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{80}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{tipos\PYZus{}por\PYZus{}provincia\PYZus{}unstacked}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{magma\PYZus{}r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linewidths}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de propiedades por tipo de propiedad por provincia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tipo de propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Nombre de provincia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{80}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(116.24999999999997, 0.5, 'Nombre de provincia')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_19_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Otra forma, no se cual es la ideal}
+\PY{n}{tipos\PYZus{}por\PYZus{}provincia\PYZus{}unstacked} \PY{o}{=} \PY{n}{tipos\PYZus{}por\PYZus{}provincia\PYZus{}unstacked}\PY{o}{.}\PY{n}{assign}\PY{p}{(}\PY{n}{total\PYZus{}prop}\PY{o}{=}\PY{n}{tipos\PYZus{}por\PYZus{}provincia\PYZus{}unstacked}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}\PYZbs{}
+                                \PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}prop}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ascending}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{o}{.}\PY{n}{drop}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{total\PYZus{}prop}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{g} \PY{o}{=} \PY{n}{tipos\PYZus{}por\PYZus{}provincia\PYZus{}unstacked}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{kind}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{barh}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{stacked}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{rot}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{,} \PY{n}{colormap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gist\PYZus{}rainbow}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de propiedades por tipo en cada provincia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de propiedades}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Nombre de provincia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{16}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0, 0.5, 'Nombre de provincia')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_20_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{Analisis del precio}\label{analisis-del-precio}
+
+    \paragraph{Precio promedio de propiedades por
+provincia}\label{precio-promedio-de-propiedades-por-provincia}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{82}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{precio\PYZus{}por\PYZus{}provincia} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{provincia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{o}{.}\PY{n}{agg}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{precio}\PY{l+s+s2}{\PYZdq{}} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{barplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{precio\PYZus{}por\PYZus{}provincia}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{values}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{n}{precio\PYZus{}por\PYZus{}provincia}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{orient}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{h}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio promedio de propiedades por provincia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{18}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Nombre de provincia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{82}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0, 0.5, 'Nombre de provincia')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_23_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Precio promedio por tipo de
+propiedad}\label{precio-promedio-por-tipo-de-propiedad}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{83}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{precio\PYZus{}prom\PYZus{}tipo\PYZus{}prop} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{agg}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{precio}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{mean}\PY{l+s+s1}{\PYZsq{}}\PY{p}{\PYZcb{}}\PY{p}{)}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{precio}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{barplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{precio\PYZus{}prom\PYZus{}tipo\PYZus{}prop}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{values}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{n}{precio\PYZus{}prom\PYZus{}tipo\PYZus{}prop}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{orient}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{h}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio promedio por tipo de propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{18}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tipo de propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{83}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0, 0.5, 'Tipo de propiedad')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_25_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Precio promedio por tipo de propiedad por
+provincia}\label{precio-promedio-por-tipo-de-propiedad-por-provincia}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{84}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{precio\PYZus{}prom\PYZus{}por\PYZus{}prop\PYZus{}por\PYZus{}prov} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{provincia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{agg}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{precio}\PY{l+s+s2}{\PYZdq{}} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{precio\PYZus{}prom\PYZus{}por\PYZus{}prop\PYZus{}por\PYZus{}prov\PYZus{}unstacked} \PY{o}{=} \PY{n}{precio\PYZus{}prom\PYZus{}por\PYZus{}prop\PYZus{}por\PYZus{}prov}\PY{o}{.}\PY{n}{unstack}\PY{p}{(}\PY{n}{level}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{.}\PY{n}{fillna}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}
+\PY{n}{precio\PYZus{}prom\PYZus{}por\PYZus{}prop\PYZus{}por\PYZus{}prov\PYZus{}unstacked}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{84}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                                    precio                       \textbackslash{}
+tipo\_de\_propiedad              Apartamento     Bodega comercial
+provincia
+Aguascalientes                1,983,935.28         1,824,285.71
+Baja California Norte         1,031,353.64         1,131,650.00
+Baja California Sur           1,387,353.66         1,275,000.00
+Campeche                      2,755,000.00         5,500,000.00
+Chiapas                         952,988.23         4,043,750.00
+
+                                                                 \textbackslash{}
+tipo\_de\_propiedad                     Casa   Casa en condominio
+provincia
+Aguascalientes                1,411,555.63         1,842,735.34
+Baja California Norte           749,331.40           705,129.23
+Baja California Sur           1,165,893.77         2,007,089.85
+Campeche                      1,460,350.82         1,827,181.82
+Chiapas                       1,914,576.35         1,653,721.50
+
+                                                                    \textbackslash{}
+tipo\_de\_propiedad        Casa uso de suelo Departamento Compartido
+provincia
+Aguascalientes                2,045,000.00                    0.00
+Baja California Norte         1,850,000.00              746,091.40
+Baja California Sur           2,140,000.00                    0.00
+Campeche                        650,000.00                    0.00
+Chiapas                       6,000,000.00                    0.00
+
+                                                                 \textbackslash{}
+tipo\_de\_propiedad                   Duplex             Edificio
+provincia
+Aguascalientes                        0.00         3,858,166.67
+Baja California Norte           654,029.09                 0.00
+Baja California Sur           1,775,000.00         4,620,000.00
+Campeche                              0.00         6,100,000.00
+Chiapas                       1,500,000.00         6,394,230.77
+
+                                                                 {\ldots}  \textbackslash{}
+tipo\_de\_propiedad                   Garage            Hospedaje  {\ldots}
+provincia                                                        {\ldots}
+Aguascalientes                        0.00                 0.00  {\ldots}
+Baja California Norte                 0.00                 0.00  {\ldots}
+Baja California Sur                   0.00                 0.00  {\ldots}
+Campeche                              0.00         3,000,000.00  {\ldots}
+Chiapas                               0.00                 0.00  {\ldots}
+
+                                                                 \textbackslash{}
+tipo\_de\_propiedad                     Lote      Nave industrial
+provincia
+Aguascalientes                        0.00         1,500,000.00
+Baja California Norte                 0.00         2,816,000.00
+Baja California Sur                   0.00                 0.00
+Campeche                              0.00                 0.00
+Chiapas                               0.00                 0.00
+
+                                                                 \textbackslash{}
+tipo\_de\_propiedad        Oficina comercial                Otros
+provincia
+Aguascalientes                3,093,333.33                 0.00
+Baja California Norte                 0.00                 0.00
+Baja California Sur             357,000.00                 0.00
+Campeche                              0.00                 0.00
+Chiapas                       3,510,000.00                 0.00
+
+                                                                 \textbackslash{}
+tipo\_de\_propiedad        Quinta Vacacional               Rancho
+provincia
+Aguascalientes                1,782,714.29                 0.00
+Baja California Norte         2,050,000.00         1,596,666.67
+Baja California Sur           5,500,000.00         1,200,000.00
+Campeche                      1,700,000.00                 0.00
+Chiapas                       4,733,333.33         4,844,278.00
+
+                                                                 \textbackslash{}
+tipo\_de\_propiedad                  Terreno    Terreno comercial
+provincia
+Aguascalientes                  980,819.14         1,131,710.60
+Baja California Norte           532,429.62         1,954,000.00
+Baja California Sur             981,975.29         1,889,450.00
+Campeche                      1,093,561.25           600,000.00
+Chiapas                       1,232,126.25                 0.00
+
+
+tipo\_de\_propiedad       Terreno industrial                Villa
+provincia
+Aguascalientes                        0.00         2,942,000.00
+Baja California Norte                 0.00           928,000.00
+Baja California Sur                   0.00           850,000.00
+Campeche                              0.00                 0.00
+Chiapas                               0.00         1,500,000.00
+
+[5 rows x 24 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{85}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{precio\PYZus{}prom\PYZus{}por\PYZus{}prop\PYZus{}por\PYZus{}prov\PYZus{}unstacked}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{n}{precio\PYZus{}prom\PYZus{}por\PYZus{}prop\PYZus{}por\PYZus{}prov\PYZus{}unstacked}\PY{o}{.}\PY{n}{columns}\PY{o}{.}\PY{n}{get\PYZus{}level\PYZus{}values}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{precio\PYZus{}prom\PYZus{}por\PYZus{}prop\PYZus{}por\PYZus{}prov\PYZus{}unstacked}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{85}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+tipo\_de\_propiedad              Apartamento     Bodega comercial  \textbackslash{}
+provincia
+Aguascalientes                1,983,935.28         1,824,285.71
+Baja California Norte         1,031,353.64         1,131,650.00
+Baja California Sur           1,387,353.66         1,275,000.00
+Campeche                      2,755,000.00         5,500,000.00
+Chiapas                         952,988.23         4,043,750.00
+
+tipo\_de\_propiedad                     Casa   Casa en condominio  \textbackslash{}
+provincia
+Aguascalientes                1,411,555.63         1,842,735.34
+Baja California Norte           749,331.40           705,129.23
+Baja California Sur           1,165,893.77         2,007,089.85
+Campeche                      1,460,350.82         1,827,181.82
+Chiapas                       1,914,576.35         1,653,721.50
+
+tipo\_de\_propiedad        Casa uso de suelo  Departamento Compartido  \textbackslash{}
+provincia
+Aguascalientes                2,045,000.00                     0.00
+Baja California Norte         1,850,000.00               746,091.40
+Baja California Sur           2,140,000.00                     0.00
+Campeche                        650,000.00                     0.00
+Chiapas                       6,000,000.00                     0.00
+
+tipo\_de\_propiedad                   Duplex             Edificio  \textbackslash{}
+provincia
+Aguascalientes                        0.00         3,858,166.67
+Baja California Norte           654,029.09                 0.00
+Baja California Sur           1,775,000.00         4,620,000.00
+Campeche                              0.00         6,100,000.00
+Chiapas                       1,500,000.00         6,394,230.77
+
+tipo\_de\_propiedad                   Garage            Hospedaje  {\ldots}  \textbackslash{}
+provincia                                                        {\ldots}
+Aguascalientes                        0.00                 0.00  {\ldots}
+Baja California Norte                 0.00                 0.00  {\ldots}
+Baja California Sur                   0.00                 0.00  {\ldots}
+Campeche                              0.00         3,000,000.00  {\ldots}
+Chiapas                               0.00                 0.00  {\ldots}
+
+tipo\_de\_propiedad                     Lote      Nave industrial  \textbackslash{}
+provincia
+Aguascalientes                        0.00         1,500,000.00
+Baja California Norte                 0.00         2,816,000.00
+Baja California Sur                   0.00                 0.00
+Campeche                              0.00                 0.00
+Chiapas                               0.00                 0.00
+
+tipo\_de\_propiedad        Oficina comercial                Otros  \textbackslash{}
+provincia
+Aguascalientes                3,093,333.33                 0.00
+Baja California Norte                 0.00                 0.00
+Baja California Sur             357,000.00                 0.00
+Campeche                              0.00                 0.00
+Chiapas                       3,510,000.00                 0.00
+
+tipo\_de\_propiedad        Quinta Vacacional               Rancho  \textbackslash{}
+provincia
+Aguascalientes                1,782,714.29                 0.00
+Baja California Norte         2,050,000.00         1,596,666.67
+Baja California Sur           5,500,000.00         1,200,000.00
+Campeche                      1,700,000.00                 0.00
+Chiapas                       4,733,333.33         4,844,278.00
+
+tipo\_de\_propiedad                  Terreno    Terreno comercial  \textbackslash{}
+provincia
+Aguascalientes                  980,819.14         1,131,710.60
+Baja California Norte           532,429.62         1,954,000.00
+Baja California Sur             981,975.29         1,889,450.00
+Campeche                      1,093,561.25           600,000.00
+Chiapas                       1,232,126.25                 0.00
+
+tipo\_de\_propiedad       Terreno industrial                Villa
+provincia
+Aguascalientes                        0.00         2,942,000.00
+Baja California Norte                 0.00           928,000.00
+Baja California Sur                   0.00           850,000.00
+Campeche                              0.00                 0.00
+Chiapas                               0.00         1,500,000.00
+
+[5 rows x 24 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{86}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{formatter} \PY{o}{=} \PY{n}{tkr}\PY{o}{.}\PY{n}{ScalarFormatter}\PY{p}{(}\PY{n}{useMathText}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{formatter}\PY{o}{.}\PY{n}{set\PYZus{}scientific}\PY{p}{(}\PY{k+kc}{False}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{14}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{precio\PYZus{}prom\PYZus{}por\PYZus{}prop\PYZus{}por\PYZus{}prov\PYZus{}unstacked}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{magma\PYZus{}r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linewidths}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{cbar\PYZus{}kws}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{format}\PY{l+s+s2}{\PYZdq{}} \PY{p}{:} \PY{n}{formatter}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Relacion de precio por tipo de propiedad por provincia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tipo de propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Nombre de provincia}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{86}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(141.25, 0.5, 'Nombre de provincia')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_29_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{Analisis de propiedades a nivel
+temporal}\label{analisis-de-propiedades-a-nivel-temporal}
+
+    \paragraph{Cantidad de publicaciones por
+anio}\label{cantidad-de-publicaciones-por-anio}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Agrego columna con anio y mes para facilitar operaciones, considerando que no hay NULLs en el atributo \PYZsq{}fecha\PYZsq{}}
+\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{anio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{fecha}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{dt}\PY{o}{.}\PY{n}{year}
+\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{fecha}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{dt}\PY{o}{.}\PY{n}{month}
+\PY{n}{df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{6}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                                                   titulo  \textbackslash{}
+id
+254099                                  depto. tipo a-402
+53461                      condominio horizontal en venta
+247984              casa en venta urbi 3 recamaras tonala
+209067  casa sola en toluca zinacantepec con credito i{\ldots}
+185997                                     paseos del sol
+
+                                              descripcion   tipo\_de\_propiedad  \textbackslash{}
+id
+254099  depto. interior de 80.15m2, consta de sala com{\ldots}         Apartamento
+53461   <p>entre sonora y guerrero, atr\&aacute;s del h{\ldots}  Casa en condominio
+247984  descripcion \textbackslash{}nla mejor ubicacion residencial e{\ldots}                Casa
+209067  casa en privada con caseta de vigilancia casas{\ldots}                Casa
+185997  bonito departamento en excelentes condiciones {\ldots}         Apartamento
+
+                              direccion                  ciudad  \textbackslash{}
+id
+254099  Avenida Division del Norte 2005           Benito Juárez
+53461                        AV. MEXICO  La Magdalena Contreras
+247984                      Urbi Tonala                  Tonalá
+209067    IGNACIO MANUEL ALTAMIRANO 128            Zinacantepec
+185997                  PASEOS DEL SOL                  Zapopan
+
+               provincia           antiguedad         habitaciones  \textbackslash{}
+id
+254099  Distrito Federal                  nan                 2.00
+53461   Distrito Federal                10.00                 3.00
+247984           Jalisco                 5.00                 3.00
+209067    Edo. de México                 1.00                 2.00
+185997           Jalisco                10.00                 2.00
+
+                    garages                banos  {\ldots}                  lng  \textbackslash{}
+id                                                {\ldots}
+254099                 1.00                 2.00  {\ldots}                  nan
+53461                  2.00                 2.00  {\ldots}               -99.23
+247984                 2.00                 2.00  {\ldots}                  nan
+209067                 1.00                 1.00  {\ldots}               -99.69
+185997                 1.00                 1.00  {\ldots}                  nan
+
+            fecha             gimnasio       usos\_multiples  \textbackslash{}
+id
+254099 2015-08-23                 0.00                 0.00
+53461  2013-06-28                 0.00                 0.00
+247984 2015-10-17                 0.00                 0.00
+209067 2012-03-09                 0.00                 0.00
+185997 2016-06-07                 0.00                 0.00
+
+                    piscina    escuelas\_cercanas  \textbackslash{}
+id
+254099                 0.00                 0.00
+53461                  0.00                 1.00
+247984                 0.00                 0.00
+209067                 0.00                 1.00
+185997                 0.00                 0.00
+
+        centros\_comerciales\_cercanos               precio  anio  mes
+id
+254099                          0.00         2,273,000.00  2015    8
+53461                           1.00         3,600,000.00  2013    6
+247984                          0.00         1,200,000.00  2015   10
+209067                          1.00           650,000.00  2012    3
+185997                          0.00         1,150,000.00  2016    6
+
+[5 rows x 24 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{59}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{propiedades\PYZus{}por\PYZus{}anio} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{anio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{o}{.}\PY{n}{agg}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{anio}\PY{l+s+s2}{\PYZdq{}} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{count}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{propiedades\PYZus{}por\PYZus{}anio}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cantidad\PYZus{}de\PYZus{}publicaciones}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+\PY{n}{propiedades\PYZus{}por\PYZus{}anio}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cantidad\PYZus{}de\PYZus{}publicaciones}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{propiedades\PYZus{}por\PYZus{}anio}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{59}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+      cantidad\_de\_publicaciones
+anio
+2012                      23534
+2013                      30386
+2014                      40572
+2015                      51470
+2016                      94038
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{60}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{barplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{propiedades\PYZus{}por\PYZus{}anio}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{n}{propiedades\PYZus{}por\PYZus{}anio}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cantidad\PYZus{}de\PYZus{}publicaciones}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de publicaciones de propiedades por anio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{15}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Anio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{13}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de publicaciones}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{13}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{60}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0, 0.5, 'Cantidad de publicaciones')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_34_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Cantidad de publicaciones por anio por tipo de
+propiedad}\label{cantidad-de-publicaciones-por-anio-por-tipo-de-propiedad}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{61}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Esto me quedo medio feo, tengo que ver si hay alguna manera de mostrar lo mismo mas lindo o separar el grafico en varias partes}
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{15}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{countplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{anio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{hue}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{df}\PY{p}{,} \PY{n}{palette}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{hls}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de publicaciones por tipo de propiedad por anio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{18}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Anio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{18}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de publicaciones}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{18}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{61}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0, 0.5, 'Cantidad de publicaciones')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_36_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{101}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Version iterativa para graficos individuales}
+\PY{k}{for} \PY{n}{tipo} \PY{o+ow}{in} \PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Descarto Hospedaje, Garage y Duplex y NaN por no haber datos suficentes}
+    \PY{k}{if} \PY{n}{pd}\PY{o}{.}\PY{n}{isnull}\PY{p}{(}\PY{n}{tipo}\PY{p}{)} \PY{o+ow}{or} \PY{n}{tipo} \PY{o+ow}{in} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hospedaje}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Garage}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Duplex}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{:}
+        \PY{k}{continue}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+    \PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{countplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{anio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{==} \PY{n}{tipo}\PY{p}{,} \PY{p}{:}\PY{p}{]}\PY{p}{,} \PY{n}{palette}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tab10}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+    \PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de publicaciones de }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{tipo}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ por anio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+    \PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Anio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{11}\PY{p}{)}
+    \PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de publicaciones}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{11}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_4.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_6.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_8.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_9.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_10.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_11.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_12.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_13.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_14.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_15.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_16.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_17.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_18.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_19.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_37_20.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Cantidad de publicaciones por anio y
+mes}\label{cantidad-de-publicaciones-por-anio-y-mes}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{64}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{cant\PYZus{}publicaciones\PYZus{}anio\PYZus{}mes} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{anio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{agg}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mes}\PY{l+s+s2}{\PYZdq{}} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{count}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{cant\PYZus{}publicaciones\PYZus{}anio\PYZus{}mes}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{64}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+           mes
+anio mes
+2012 1    1528
+     2    1327
+     3    1103
+     4    1434
+     5    1857
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{65}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{cant\PYZus{}publicaciones\PYZus{}anio\PYZus{}mes\PYZus{}unstacked} \PY{o}{=} \PY{n}{cant\PYZus{}publicaciones\PYZus{}anio\PYZus{}mes}\PY{o}{.}\PY{n}{unstack}\PY{p}{(}\PY{n}{level}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{cant\PYZus{}publicaciones\PYZus{}anio\PYZus{}mes\PYZus{}unstacked}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{n}{cant\PYZus{}publicaciones\PYZus{}anio\PYZus{}mes\PYZus{}unstacked}\PY{o}{.}\PY{n}{columns}\PY{o}{.}\PY{n}{get\PYZus{}level\PYZus{}values}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{cant\PYZus{}publicaciones\PYZus{}anio\PYZus{}mes\PYZus{}unstacked}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{65}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+mes     1     2     3     4     5     6     7     8     9     10    11     12
+anio
+2012  1528  1327  1103  1434  1857  1524  1973  3971  2598  3161  1608   1450
+2013  1993  1401  1734  1829  2000  2016  2524  2374  3321  4056  4012   3126
+2014  2403  2534  2916  2780  3071  3082  3125  3583  3911  3811  4613   4743
+2015  4310  3869  3957  3783  3696  3804  3875  4526  4863  5552  4906   4329
+2016  5775  4592  5022  6640  5438  6795  6013  6443  5929  6726  6086  28579
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{66}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{cant\PYZus{}publicaciones\PYZus{}anio\PYZus{}mes\PYZus{}unstacked}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{magma\PYZus{}r}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linewidths}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de publicaciones segun anio y mes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{15}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Anio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{66}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(116.24999999999999, 0.5, 'Anio')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_41_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Promedio de precio de propiedades segun mes y
+anio}\label{promedio-de-precio-de-propiedades-segun-mes-y-anio}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{67}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{precio\PYZus{}por\PYZus{}mes\PYZus{}anio} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{anio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{agg}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{precio}\PY{l+s+s2}{\PYZdq{}} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{precio\PYZus{}por\PYZus{}mes\PYZus{}anio}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{67}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                       precio
+anio mes
+2012 1           1,910,287.35
+     2           1,817,814.98
+     3           1,966,355.14
+     4           2,167,271.07
+     5           1,899,123.96
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{68}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{precio\PYZus{}por\PYZus{}mes\PYZus{}anio\PYZus{}unstacked} \PY{o}{=} \PY{n}{precio\PYZus{}por\PYZus{}mes\PYZus{}anio}\PY{o}{.}\PY{n}{unstack}\PY{p}{(}\PY{n}{level}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{precio\PYZus{}por\PYZus{}mes\PYZus{}anio\PYZus{}unstacked}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{n}{precio\PYZus{}por\PYZus{}mes\PYZus{}anio\PYZus{}unstacked}\PY{o}{.}\PY{n}{columns}\PY{o}{.}\PY{n}{get\PYZus{}level\PYZus{}values}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{precio\PYZus{}por\PYZus{}mes\PYZus{}anio\PYZus{}unstacked}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{68}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+mes                    1                    2                    3   \textbackslash{}
+anio
+2012         1,910,287.35         1,817,814.98         1,966,355.14
+2013         2,032,821.20         2,158,046.25         2,092,787.90
+2014         2,194,886.65         2,327,648.59         2,268,508.58
+2015         2,399,791.18         2,367,703.88         2,602,793.96
+2016         2,688,369.65         2,695,539.53         2,807,389.07
+
+mes                    4                    5                    6   \textbackslash{}
+anio
+2012         2,167,271.07         1,899,123.96         1,930,387.50
+2013         2,164,533.34         2,119,536.03         2,058,967.85
+2014         2,360,990.84         2,312,619.62         2,357,716.97
+2015         2,520,665.66         2,643,570.46         2,734,103.95
+2016         2,827,182.84         2,726,719.66         2,744,906.10
+
+mes                    7                    8                    9   \textbackslash{}
+anio
+2012         1,827,298.64         2,116,829.44         2,092,779.60
+2013         2,221,330.79         2,197,107.92         2,112,627.39
+2014         2,358,129.60         2,345,645.65         2,430,108.50
+2015         2,779,177.46         2,654,494.03         2,778,323.67
+2016         2,882,329.84         2,880,278.12         2,918,303.51
+
+mes                    10                   11                   12
+anio
+2012         2,228,156.79         2,188,356.60         1,894,107.71
+2013         2,178,858.70         2,082,400.55         2,075,765.19
+2014         2,262,678.24         2,429,326.67         2,553,107.23
+2015         2,712,010.14         2,744,395.71         2,604,719.23
+2016         2,825,196.14         2,824,474.06         2,792,976.58
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{69}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{precio\PYZus{}por\PYZus{}mes\PYZus{}anio\PYZus{}unstacked}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{YlGnBu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linewidths}\PY{o}{=}\PY{l+m+mf}{0.25}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio promedio de propiedades segun mes y anio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{15}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Anio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{69}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(116.24999999999999, 0.5, 'Anio')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_45_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Precio promedio de tipo de propiedades segun
+anio}\label{precio-promedio-de-tipo-de-propiedades-segun-anio}
+
+La idea era comparar la variacion de precios de cada propiedad a lo
+largo de los anios, a simple vista los bar plots parecen servir, pero
+desconozco si hay una manera mejor de visualizar lo mismo.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{precio\PYZus{}por\PYZus{}prop\PYZus{}anio} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{anio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{agg}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{precio}\PY{l+s+s2}{\PYZdq{}} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{precio\PYZus{}por\PYZus{}prop\PYZus{}anio}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{7}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                                     precio
+tipo\_de\_propiedad anio
+Apartamento       2012         1,895,031.69
+                  2013         2,219,234.60
+                  2014         2,429,907.17
+                  2015         2,965,421.26
+                  2016         3,141,785.85
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{precio\PYZus{}por\PYZus{}prop\PYZus{}anio\PYZus{}reshaped} \PY{o}{=} \PY{n}{precio\PYZus{}por\PYZus{}prop\PYZus{}anio}\PY{o}{.}\PY{n}{reset\PYZus{}index}\PY{p}{(}\PY{p}{)}
+\PY{n}{precio\PYZus{}por\PYZus{}prop\PYZus{}anio\PYZus{}reshaped}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{8}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+  tipo\_de\_propiedad  anio               precio
+0       Apartamento  2012         1,895,031.69
+1       Apartamento  2013         2,219,234.60
+2       Apartamento  2014         2,429,907.17
+3       Apartamento  2015         2,965,421.26
+4       Apartamento  2016         3,141,785.85
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{catplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{anio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{col}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{precio\PYZus{}por\PYZus{}prop\PYZus{}anio\PYZus{}reshaped}\PY{p}{,} \PY{n}{kind}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{bar}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{col\PYZus{}wrap}\PY{o}{=}\PY{l+m+mi}{4}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}titles}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio promedio de }\PY{l+s+si}{\PYZob{}col\PYZus{}name\PYZcb{}}\PY{l+s+s2}{ segun anio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ticklabel\PYZus{}format}\PY{p}{(}\PY{n}{style}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{plain}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_49_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{Analisis a nivel de propiedades segun
+atributos}\label{analisis-a-nivel-de-propiedades-segun-atributos}
+
+    \paragraph{Porcentaje de propiedades con distinta cantidad de
+banios}\label{porcentaje-de-propiedades-con-distinta-cantidad-de-banios}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{73}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{porcentaje\PYZus{}de\PYZus{}prop\PYZus{}banios} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{banos}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{n}{normalize}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{porcentaje\PYZus{}de\PYZus{}prop\PYZus{}banios}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{index}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+m+mf}{2.00}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{2 banios}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+m+mf}{1.00}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{1 banio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+m+mf}{3.00}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{3 banios}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+m+mf}{4.00}\PY{p}{:}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{4 banios}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{porcentaje\PYZus{}de\PYZus{}prop\PYZus{}banios}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{73}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+2 banios                   0.41
+1 banio                    0.27
+3 banios                   0.23
+4 banios                   0.09
+Name: banos, dtype: float64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{74}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{g} \PY{o}{=} \PY{n}{porcentaje\PYZus{}de\PYZus{}prop\PYZus{}banios}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{pie}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{,} \PY{n}{autopct}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}1.1f}\PY{l+s+si}{\PYZpc{}\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Porcentaje de propiedades segun cantidad de banios}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{74}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0.5, 1.0, 'Porcentaje de propiedades segun cantidad de banios')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_53_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Porcentaje de propiedades con distinta
+garages}\label{porcentaje-de-propiedades-con-distinta-garages}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{75}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{porcentaje\PYZus{}de\PYZus{}prop\PYZus{}garages} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{garages}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{n}{normalize}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{porcentaje\PYZus{}de\PYZus{}prop\PYZus{}garages}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{index}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+m+mf}{2.00} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{2 garages}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+m+mf}{1.00} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{1 garage}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+m+mf}{0.00} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{0 garage}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+m+mf}{3.00} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{3 garages}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{porcentaje\PYZus{}de\PYZus{}prop\PYZus{}garages}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{75}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+2 garages                   0.47
+1 garage                    0.29
+0 garage                    0.13
+3 garages                   0.11
+Name: garages, dtype: float64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{76}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{g} \PY{o}{=} \PY{n}{porcentaje\PYZus{}de\PYZus{}prop\PYZus{}garages}\PY{o}{.}\PY{n}{plot}\PY{o}{.}\PY{n}{pie}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{,} \PY{n}{autopct}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}1.1f}\PY{l+s+si}{\PYZpc{}\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{label}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Porcentaje de propiedades segun cantidad de garages}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{76}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0.5, 1.0, 'Porcentaje de propiedades segun cantidad de garages')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_56_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Cantidad de propiedades segun la cantidad de
+habitaciones}\label{cantidad-de-propiedades-segun-la-cantidad-de-habitaciones}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{77}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{cant\PYZus{}prop\PYZus{}segun\PYZus{}habitaciones} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{habitaciones}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{index}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+m+mf}{1.00}\PY{p}{:}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mf}{2.00}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mf}{3.00}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mf}{4.00}\PY{p}{:}\PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mf}{5.00}\PY{p}{:}\PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mf}{6.00}\PY{p}{:}\PY{l+m+mi}{6}\PY{p}{,} \PY{l+m+mf}{7.00}\PY{p}{:}\PY{l+m+mi}{7}\PY{p}{,}\PYZbs{}
+                                               \PY{l+m+mf}{8.00}\PY{p}{:}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mf}{9.00}\PY{p}{:}\PY{l+m+mi}{9}\PY{p}{,} \PY{l+m+mf}{10.00}\PY{p}{:}\PY{l+m+mi}{10}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{cant\PYZus{}prop\PYZus{}segun\PYZus{}habitaciones}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{77}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+9        179
+10       316
+8        398
+7        539
+6       1669
+5       4596
+1       5069
+4      25068
+2      57808
+3     121887
+Name: habitaciones, dtype: int64
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{78}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{barplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{cant\PYZus{}prop\PYZus{}segun\PYZus{}habitaciones}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{n}{cant\PYZus{}prop\PYZus{}segun\PYZus{}habitaciones}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de propiedades segun la cantidad de habitaciones}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{15}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de habitaciones}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de propiedades}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{78}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0, 0.5, 'Cantidad de propiedades')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_59_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Correlacion entre precio y metros cubiertos dentro de cada
+tipo de
+propiedad}\label{correlacion-entre-precio-y-metros-cubiertos-dentro-de-cada-tipo-de-propiedad}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{20}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Version iterativa para graficos individuales}
+\PY{k}{for} \PY{n}{tipo} \PY{o+ow}{in} \PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} Descarto Hospedaje, Garage, Duplex, Lote y NaN por no haber datos suficentes}
+    \PY{c+c1}{\PYZsh{} Lote tiene NaNs en metros\PYZus{}cubiertos en todos los registros}
+    \PY{k}{if} \PY{n}{pd}\PY{o}{.}\PY{n}{isnull}\PY{p}{(}\PY{n}{tipo}\PY{p}{)} \PY{o+ow}{or} \PY{n}{tipo} \PY{o+ow}{in} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Hospedaje}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Garage}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Duplex}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Lote}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{:}
+        \PY{k}{continue}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+    \PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{scatterplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{metros\PYZus{}cubiertos}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{==} \PY{n}{tipo}\PY{p}{,} \PY{p}{:}\PY{p}{]}\PY{p}{)}
+    \PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Distribucion de publicaciones de }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{tipo}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ segun precio y metros totales}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{14}\PY{p}{)}
+    \PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Metros cubiertos}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{11}\PY{p}{)}
+    \PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{11}\PY{p}{)}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{ticklabel\PYZus{}format}\PY{p}{(}\PY{n}{style}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{plain}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_4.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_6.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_8.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_9.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_10.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_11.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_12.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_13.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_14.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_15.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_16.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_17.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_18.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_61_19.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Precio promedio segun cantidad de
+habitaciones}\label{precio-promedio-segun-cantidad-de-habitaciones}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{81}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{precio\PYZus{}segun\PYZus{}habitaciones} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{habitaciones}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{o}{.}\PY{n}{agg}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{precio}\PY{l+s+s2}{\PYZdq{}} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{precio\PYZus{}segun\PYZus{}habitaciones}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{index}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+m+mf}{1.00}\PY{p}{:}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mf}{2.00}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mf}{3.00}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mf}{4.00}\PY{p}{:}\PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mf}{5.00}\PY{p}{:}\PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mf}{6.00}\PY{p}{:}\PY{l+m+mi}{6}\PY{p}{,} \PY{l+m+mf}{7.00}\PY{p}{:}\PY{l+m+mi}{7}\PY{p}{,}\PYZbs{}
+                                               \PY{l+m+mf}{8.00}\PY{p}{:}\PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mf}{9.00}\PY{p}{:}\PY{l+m+mi}{9}\PY{p}{,} \PY{l+m+mf}{10.00}\PY{p}{:}\PY{l+m+mi}{10}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{precio\PYZus{}segun\PYZus{}habitaciones}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{81}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                           precio
+habitaciones
+1                    1,806,074.64
+2                    1,616,899.96
+3                    2,769,606.78
+4                    3,494,388.63
+5                    3,284,971.94
+6                    3,165,558.67
+7                    3,562,563.99
+8                    3,432,464.06
+9                    3,936,173.91
+10                   4,520,161.52
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{82}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{barplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{precio\PYZus{}segun\PYZus{}habitaciones}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{n}{precio\PYZus{}segun\PYZus{}habitaciones}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio promedio segun cantidad de habitaciones}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{15}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de habitaciones}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{82}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0, 0.5, 'Precio')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_64_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Precio promedio segun cantidad de
+banios}\label{precio-promedio-segun-cantidad-de-banios}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{83}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{precio\PYZus{}segun\PYZus{}banios} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{banos}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{o}{.}\PY{n}{agg}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{precio}\PY{l+s+s2}{\PYZdq{}} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{precio\PYZus{}segun\PYZus{}banios}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{index}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+m+mf}{1.00}\PY{p}{:}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mf}{2.00}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mf}{3.00}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mf}{4.00}\PY{p}{:}\PY{l+m+mi}{4}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{precio\PYZus{}segun\PYZus{}banios}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{83}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                    precio
+banos
+1             1,041,801.51
+2             2,317,529.62
+3             3,701,016.76
+4             4,449,123.21
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{84}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{barplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{precio\PYZus{}segun\PYZus{}banios}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{n}{precio\PYZus{}segun\PYZus{}banios}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio promedio segun cantidad de banios}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{15}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de banios}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{84}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0, 0.5, 'Precio')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_67_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Precio promedio segun cantidad de banios y habitaciones en
+conjunto}\label{precio-promedio-segun-cantidad-de-banios-y-habitaciones-en-conjunto}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{85}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{precio\PYZus{}por\PYZus{}habitaciones\PYZus{}banios} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{habitaciones}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{banos}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{o}{.}\PY{n}{agg}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{precio}\PY{l+s+s2}{\PYZdq{}} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{precio\PYZus{}por\PYZus{}habitaciones\PYZus{}banios}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{85}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                                 precio
+habitaciones banos
+1.00         1.00          1,666,180.00
+             2.00          2,597,320.68
+             3.00          3,047,855.75
+             4.00          3,908,000.00
+2.00         1.00            846,093.77
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{86}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{precio\PYZus{}por\PYZus{}habitaciones\PYZus{}banios\PYZus{}unstacked} \PY{o}{=} \PY{n}{precio\PYZus{}por\PYZus{}habitaciones\PYZus{}banios}\PY{o}{.}\PY{n}{unstack}\PY{p}{(}\PY{n}{level}\PY{o}{=}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+\PY{n}{precio\PYZus{}por\PYZus{}habitaciones\PYZus{}banios\PYZus{}unstacked}\PY{o}{.}\PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{]}
+\PY{n}{precio\PYZus{}por\PYZus{}habitaciones\PYZus{}banios\PYZus{}unstacked}\PY{o}{.}\PY{n}{index} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{,} \PY{l+m+mi}{7}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{,} \PY{l+m+mi}{9}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{]}
+\PY{n}{precio\PYZus{}por\PYZus{}habitaciones\PYZus{}banios\PYZus{}unstacked}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{86}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                      1                    2                    3  \textbackslash{}
+1          1,666,180.00         2,597,320.68         3,047,855.75
+2            846,093.77         2,622,038.47         3,587,988.91
+3          1,121,764.53         2,191,549.08         3,817,473.53
+4          1,801,497.42         2,311,624.25         3,428,691.39
+5          1,655,019.05         2,065,320.57         3,047,498.18
+6          2,533,769.37         2,159,900.70         2,878,298.22
+7          2,873,260.87         2,282,672.15         3,166,718.38
+8          2,252,576.63         3,020,452.63         3,052,109.23
+9          2,900,000.00         3,040,339.52         3,329,074.07
+10         2,719,375.00         3,413,600.00         3,735,454.55
+
+                      4
+1          3,908,000.00
+2          3,899,193.22
+3          4,516,266.14
+4          4,575,855.17
+5          3,975,614.62
+6          3,404,577.09
+7          3,564,640.00
+8          3,542,705.14
+9          4,597,257.14
+10         4,342,564.10
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{87}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
+\PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{precio\PYZus{}por\PYZus{}habitaciones\PYZus{}banios\PYZus{}unstacked}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{YlGnBu}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{linewidths}\PY{o}{=}\PY{l+m+mf}{0.25}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio promedio de propiedades segun habitaciones y banios}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{15}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de banios}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de habitaciones}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{87}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(91.25, 0.5, 'Cantidad de habitaciones')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_71_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Precio promedio segun cantidad de
+garages}\label{precio-promedio-segun-cantidad-de-garages}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{88}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{precio\PYZus{}segun\PYZus{}garages} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{garages}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{o}{.}\PY{n}{agg}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{precio}\PY{l+s+s2}{\PYZdq{}} \PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{precio\PYZus{}segun\PYZus{}garages}\PY{o}{.}\PY{n}{rename}\PY{p}{(}\PY{n}{index}\PY{o}{=}\PY{p}{\PYZob{}}\PY{l+m+mf}{0.00}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mf}{1.00}\PY{p}{:}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mf}{2.00}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mf}{3.00}\PY{p}{:}\PY{l+m+mi}{3}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{inplace}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}
+\PY{n}{precio\PYZus{}segun\PYZus{}garages}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{88}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                      precio
+garages
+0               2,033,282.85
+1               1,346,327.74
+2               2,644,485.01
+3               4,293,016.08
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{89}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}
+\PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{barplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{n}{precio\PYZus{}segun\PYZus{}garages}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{n}{precio\PYZus{}segun\PYZus{}garages}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{values}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio promedio segun cantidad de garages}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{15}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cantidad de garages}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{12}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{89}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0, 0.5, 'Precio')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_74_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Precio promedio segun tipo de propiedad y si poseen
+gimnasio}\label{precio-promedio-segun-tipo-de-propiedad-y-si-poseen-gimnasio}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{90}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{publicaciones\PYZus{}con\PYZus{}gym} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gimnasio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mf}{1.00}\PY{p}{,} \PY{p}{:}\PY{p}{]}
+\PY{n}{tipo\PYZus{}de\PYZus{}propiedades\PYZus{}con\PYZus{}gym} \PY{o}{=} \PY{n}{publicaciones\PYZus{}con\PYZus{}gym}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}
+\PY{n}{tipo\PYZus{}de\PYZus{}propiedades\PYZus{}con\PYZus{}gym}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{90}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+array(['Apartamento', 'Casa', 'Casa en condominio',
+       'Departamento Compartido', 'Oficina comercial', 'Terreno'],
+      dtype=object)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{91}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{propiedades\PYZus{}con\PYZus{}gym} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{isin}\PY{p}{(}\PY{n}{tipo\PYZus{}de\PYZus{}propiedades\PYZus{}con\PYZus{}gym}\PY{p}{)}\PY{p}{,} \PY{p}{:}\PY{p}{]}
+\PY{n}{propiedades\PYZus{}con\PYZus{}gym}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gimnasio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{propiedades\PYZus{}con\PYZus{}gym}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gimnasio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{map}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+m+mf}{1.00}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Si}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+m+mf}{0.00}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{No}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{propiedades\PYZus{}con\PYZus{}gym}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/home/facu/.local/lib/python3.7/site-packages/ipykernel\_launcher.py:2:
+SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row\_indexer,col\_indexer] = value instead
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-
+docs/stable/user\_guide/indexing.html\#returning-a-view-versus-a-copy
+
+\end{Verbatim}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{91}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                                                   titulo  \textbackslash{}
+id
+254099                                  depto. tipo a-402
+53461                      condominio horizontal en venta
+247984              casa en venta urbi 3 recamaras tonala
+209067  casa sola en toluca zinacantepec con credito i{\ldots}
+185997                                     paseos del sol
+
+                                              descripcion   tipo\_de\_propiedad  \textbackslash{}
+id
+254099  depto. interior de 80.15m2, consta de sala com{\ldots}         Apartamento
+53461   <p>entre sonora y guerrero, atr\&aacute;s del h{\ldots}  Casa en condominio
+247984  descripcion \textbackslash{}nla mejor ubicacion residencial e{\ldots}                Casa
+209067  casa en privada con caseta de vigilancia casas{\ldots}                Casa
+185997  bonito departamento en excelentes condiciones {\ldots}         Apartamento
+
+                              direccion                  ciudad  \textbackslash{}
+id
+254099  Avenida Division del Norte 2005           Benito Juárez
+53461                        AV. MEXICO  La Magdalena Contreras
+247984                      Urbi Tonala                  Tonalá
+209067    IGNACIO MANUEL ALTAMIRANO 128            Zinacantepec
+185997                  PASEOS DEL SOL                  Zapopan
+
+               provincia           antiguedad         habitaciones  \textbackslash{}
+id
+254099  Distrito Federal                  nan                 2.00
+53461   Distrito Federal                10.00                 3.00
+247984           Jalisco                 5.00                 3.00
+209067    Edo. de México                 1.00                 2.00
+185997           Jalisco                10.00                 2.00
+
+                    garages                banos  {\ldots}                  lng  \textbackslash{}
+id                                                {\ldots}
+254099                 1.00                 2.00  {\ldots}                  nan
+53461                  2.00                 2.00  {\ldots}               -99.23
+247984                 2.00                 2.00  {\ldots}                  nan
+209067                 1.00                 1.00  {\ldots}               -99.69
+185997                 1.00                 1.00  {\ldots}                  nan
+
+            fecha  gimnasio       usos\_multiples              piscina  \textbackslash{}
+id
+254099 2015-08-23        No                 0.00                 0.00
+53461  2013-06-28        No                 0.00                 0.00
+247984 2015-10-17        No                 0.00                 0.00
+209067 2012-03-09        No                 0.00                 0.00
+185997 2016-06-07        No                 0.00                 0.00
+
+          escuelas\_cercanas centros\_comerciales\_cercanos               precio  \textbackslash{}
+id
+254099                 0.00                         0.00         2,273,000.00
+53461                  1.00                         1.00         3,600,000.00
+247984                 0.00                         0.00         1,200,000.00
+209067                 1.00                         1.00           650,000.00
+185997                 0.00                         0.00         1,150,000.00
+
+        anio  mes
+id
+254099  2015    8
+53461   2013    6
+247984  2015   10
+209067  2012    3
+185997  2016    6
+
+[5 rows x 24 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{92}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{14}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{barplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{hue}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{gimnasio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{propiedades\PYZus{}con\PYZus{}gym}\PY{p}{,} \PY{n}{ci}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Gimnasio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio promedio de propiedades segun tipo de propiedad y segun gimnasio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tipo de propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{92}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0, 0.5, 'Precio')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_78_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Precio promedio segun tipo de propiedad y si poseen
+piscina}\label{precio-promedio-segun-tipo-de-propiedad-y-si-poseen-piscina}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{93}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{publicaciones\PYZus{}con\PYZus{}piscina} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{piscina}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mf}{1.00}\PY{p}{,} \PY{p}{:}\PY{p}{]}
+\PY{n}{tipo\PYZus{}de\PYZus{}propiedades\PYZus{}con\PYZus{}piscina} \PY{o}{=} \PY{n}{publicaciones\PYZus{}con\PYZus{}piscina}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}
+\PY{n}{tipo\PYZus{}de\PYZus{}propiedades\PYZus{}con\PYZus{}piscina}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{93}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+array(['Terreno', 'Casa en condominio', 'Apartamento', 'Casa',
+       'Quinta Vacacional', 'Villa', 'Departamento Compartido', 'Rancho',
+       'Oficina comercial', nan, 'Terreno comercial', 'Edificio'],
+      dtype=object)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{94}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Remuevo NaNs}
+\PY{n}{tipo\PYZus{}de\PYZus{}propiedades\PYZus{}con\PYZus{}piscina} \PY{o}{=} \PY{p}{[}\PY{n}{x} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{tipo\PYZus{}de\PYZus{}propiedades\PYZus{}con\PYZus{}piscina} \PY{k}{if} \PY{n+nb}{str}\PY{p}{(}\PY{n}{x}\PY{p}{)} \PY{o}{!=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{nan}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{tipo\PYZus{}de\PYZus{}propiedades\PYZus{}con\PYZus{}piscina}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{94}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+['Terreno',
+ 'Casa en condominio',
+ 'Apartamento',
+ 'Casa',
+ 'Quinta Vacacional',
+ 'Villa',
+ 'Departamento Compartido',
+ 'Rancho',
+ 'Oficina comercial',
+ 'Terreno comercial',
+ 'Edificio']
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{95}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{propiedades\PYZus{}con\PYZus{}piscina} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{isin}\PY{p}{(}\PY{n}{tipo\PYZus{}de\PYZus{}propiedades\PYZus{}con\PYZus{}piscina}\PY{p}{)}\PY{p}{,} \PY{p}{:}\PY{p}{]}
+\PY{n}{propiedades\PYZus{}con\PYZus{}piscina}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{piscina}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{propiedades\PYZus{}con\PYZus{}piscina}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{piscina}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{map}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+m+mf}{1.00}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Si}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+m+mf}{0.00}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{No}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{propiedades\PYZus{}con\PYZus{}piscina}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/home/facu/.local/lib/python3.7/site-packages/ipykernel\_launcher.py:2:
+SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row\_indexer,col\_indexer] = value instead
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-
+docs/stable/user\_guide/indexing.html\#returning-a-view-versus-a-copy
+
+\end{Verbatim}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{95}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                                                   titulo  \textbackslash{}
+id
+254099                                  depto. tipo a-402
+53461                      condominio horizontal en venta
+247984              casa en venta urbi 3 recamaras tonala
+209067  casa sola en toluca zinacantepec con credito i{\ldots}
+185997                                     paseos del sol
+
+                                              descripcion   tipo\_de\_propiedad  \textbackslash{}
+id
+254099  depto. interior de 80.15m2, consta de sala com{\ldots}         Apartamento
+53461   <p>entre sonora y guerrero, atr\&aacute;s del h{\ldots}  Casa en condominio
+247984  descripcion \textbackslash{}nla mejor ubicacion residencial e{\ldots}                Casa
+209067  casa en privada con caseta de vigilancia casas{\ldots}                Casa
+185997  bonito departamento en excelentes condiciones {\ldots}         Apartamento
+
+                              direccion                  ciudad  \textbackslash{}
+id
+254099  Avenida Division del Norte 2005           Benito Juárez
+53461                        AV. MEXICO  La Magdalena Contreras
+247984                      Urbi Tonala                  Tonalá
+209067    IGNACIO MANUEL ALTAMIRANO 128            Zinacantepec
+185997                  PASEOS DEL SOL                  Zapopan
+
+               provincia           antiguedad         habitaciones  \textbackslash{}
+id
+254099  Distrito Federal                  nan                 2.00
+53461   Distrito Federal                10.00                 3.00
+247984           Jalisco                 5.00                 3.00
+209067    Edo. de México                 1.00                 2.00
+185997           Jalisco                10.00                 2.00
+
+                    garages                banos  {\ldots}                  lng  \textbackslash{}
+id                                                {\ldots}
+254099                 1.00                 2.00  {\ldots}                  nan
+53461                  2.00                 2.00  {\ldots}               -99.23
+247984                 2.00                 2.00  {\ldots}                  nan
+209067                 1.00                 1.00  {\ldots}               -99.69
+185997                 1.00                 1.00  {\ldots}                  nan
+
+            fecha             gimnasio       usos\_multiples  piscina  \textbackslash{}
+id
+254099 2015-08-23                 0.00                 0.00       No
+53461  2013-06-28                 0.00                 0.00       No
+247984 2015-10-17                 0.00                 0.00       No
+209067 2012-03-09                 0.00                 0.00       No
+185997 2016-06-07                 0.00                 0.00       No
+
+          escuelas\_cercanas  centros\_comerciales\_cercanos  \textbackslash{}
+id
+254099                 0.00                          0.00
+53461                  1.00                          1.00
+247984                 0.00                          0.00
+209067                 1.00                          1.00
+185997                 0.00                          0.00
+
+                     precio  anio  mes
+id
+254099         2,273,000.00  2015    8
+53461          3,600,000.00  2013    6
+247984         1,200,000.00  2015   10
+209067           650,000.00  2012    3
+185997         1,150,000.00  2016    6
+
+[5 rows x 24 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{96}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{22}\PY{p}{,} \PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}
+\PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{barplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{hue}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{piscina}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{propiedades\PYZus{}con\PYZus{}piscina}\PY{p}{,} \PY{n}{ci}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ticklabel\PYZus{}format}\PY{p}{(}\PY{n}{style}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{plain}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Piscina}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio promedio de propiedades segun tipo de propiedad y segun piscina}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tipo de propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{17}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{17}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{96}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0, 0.5, 'Precio')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_83_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \paragraph{Precio promedio segun tipo de propiedad y si poseen
+SUM}\label{precio-promedio-segun-tipo-de-propiedad-y-si-poseen-sum}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{97}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{publicaciones\PYZus{}con\PYZus{}sum} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{usos\PYZus{}multiples}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{==} \PY{l+m+mf}{1.00}\PY{p}{,} \PY{p}{:}\PY{p}{]}
+\PY{n}{tipo\PYZus{}de\PYZus{}propiedades\PYZus{}con\PYZus{}sum} \PY{o}{=} \PY{n}{publicaciones\PYZus{}con\PYZus{}sum}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{unique}\PY{p}{(}\PY{p}{)}
+\PY{n}{tipo\PYZus{}de\PYZus{}propiedades\PYZus{}con\PYZus{}sum}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{97}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+array(['Casa', 'Casa en condominio', 'Apartamento',
+       'Departamento Compartido', 'Oficina comercial', 'Edificio'],
+      dtype=object)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{98}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{propiedades\PYZus{}con\PYZus{}sum} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{isin}\PY{p}{(}\PY{n}{tipo\PYZus{}de\PYZus{}propiedades\PYZus{}con\PYZus{}sum}\PY{p}{)}\PY{p}{,} \PY{p}{:}\PY{p}{]}
+\PY{n}{propiedades\PYZus{}con\PYZus{}sum}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{usos\PYZus{}multiples}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{propiedades\PYZus{}con\PYZus{}sum}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{usos\PYZus{}multiples}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{map}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+m+mf}{1.00}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Si}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+m+mf}{0.00}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{No}\PY{l+s+s2}{\PYZdq{}}\PY{p}{\PYZcb{}}\PY{p}{)}
+\PY{n}{propiedades\PYZus{}con\PYZus{}sum}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+/home/facu/.local/lib/python3.7/site-packages/ipykernel\_launcher.py:2:
+SettingWithCopyWarning:
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row\_indexer,col\_indexer] = value instead
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-
+docs/stable/user\_guide/indexing.html\#returning-a-view-versus-a-copy
+
+\end{Verbatim}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{98}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                                                   titulo  \textbackslash{}
+id
+254099                                  depto. tipo a-402
+53461                      condominio horizontal en venta
+247984              casa en venta urbi 3 recamaras tonala
+209067  casa sola en toluca zinacantepec con credito i{\ldots}
+185997                                     paseos del sol
+
+                                              descripcion   tipo\_de\_propiedad  \textbackslash{}
+id
+254099  depto. interior de 80.15m2, consta de sala com{\ldots}         Apartamento
+53461   <p>entre sonora y guerrero, atr\&aacute;s del h{\ldots}  Casa en condominio
+247984  descripcion \textbackslash{}nla mejor ubicacion residencial e{\ldots}                Casa
+209067  casa en privada con caseta de vigilancia casas{\ldots}                Casa
+185997  bonito departamento en excelentes condiciones {\ldots}         Apartamento
+
+                              direccion                  ciudad  \textbackslash{}
+id
+254099  Avenida Division del Norte 2005           Benito Juárez
+53461                        AV. MEXICO  La Magdalena Contreras
+247984                      Urbi Tonala                  Tonalá
+209067    IGNACIO MANUEL ALTAMIRANO 128            Zinacantepec
+185997                  PASEOS DEL SOL                  Zapopan
+
+               provincia           antiguedad         habitaciones  \textbackslash{}
+id
+254099  Distrito Federal                  nan                 2.00
+53461   Distrito Federal                10.00                 3.00
+247984           Jalisco                 5.00                 3.00
+209067    Edo. de México                 1.00                 2.00
+185997           Jalisco                10.00                 2.00
+
+                    garages                banos  {\ldots}                  lng  \textbackslash{}
+id                                                {\ldots}
+254099                 1.00                 2.00  {\ldots}                  nan
+53461                  2.00                 2.00  {\ldots}               -99.23
+247984                 2.00                 2.00  {\ldots}                  nan
+209067                 1.00                 1.00  {\ldots}               -99.69
+185997                 1.00                 1.00  {\ldots}                  nan
+
+            fecha             gimnasio  usos\_multiples              piscina  \textbackslash{}
+id
+254099 2015-08-23                 0.00              No                 0.00
+53461  2013-06-28                 0.00              No                 0.00
+247984 2015-10-17                 0.00              No                 0.00
+209067 2012-03-09                 0.00              No                 0.00
+185997 2016-06-07                 0.00              No                 0.00
+
+          escuelas\_cercanas  centros\_comerciales\_cercanos  \textbackslash{}
+id
+254099                 0.00                          0.00
+53461                  1.00                          1.00
+247984                 0.00                          0.00
+209067                 1.00                          1.00
+185997                 0.00                          0.00
+
+                     precio  anio  mes
+id
+254099         2,273,000.00  2015    8
+53461          3,600,000.00  2013    6
+247984         1,200,000.00  2015   10
+209067           650,000.00  2012    3
+185997         1,150,000.00  2016    6
+
+[5 rows x 24 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{99}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{12}\PY{p}{,} \PY{l+m+mi}{6}\PY{p}{)}\PY{p}{)}
+\PY{n}{g} \PY{o}{=} \PY{n}{sns}\PY{o}{.}\PY{n}{barplot}\PY{p}{(}\PY{n}{x}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{y}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{hue}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{usos\PYZus{}multiples}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{data}\PY{o}{=}\PY{n}{propiedades\PYZus{}con\PYZus{}sum}\PY{p}{,} \PY{n}{ci}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Usos multiples}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio promedio de propiedades segun tipo de propiedad y segun SUM}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Tipo de propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{g}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Precio}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{99}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+Text(0, 0.5, 'Precio')
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_87_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{df}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tipo\PYZus{}de\PYZus{}propiedad}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Lote}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{p}{:}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{13}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                                             titulo  \textbackslash{}
+id
+257049  terreno / lote en venta, alvarado, veracruz
+70279              terreno/lote - cerrada dr. duran
+169168    terreno/lote - paseo  ex hacienda barbosa
+104078          terreno/lote - privada de rio nasas
+136796  terreno/lote - 3er. cerrada de juan escutia
+
+                                              descripcion tipo\_de\_propiedad  \textbackslash{}
+id
+257049  chatea con nosotros para conocer mas sobre est{\ldots}              Lote
+70279   excelente predio para demoler, ideal para cons{\ldots}              Lote
+169168  oportunidad de terreno, plano, con servicio de{\ldots}              Lote
+104078  excelente opción de terreno para las familias {\ldots}              Lote
+136796  bonito terreno ubicado en una zona de crecimie{\ldots}              Lote
+
+       direccion        ciudad         provincia           antiguedad  \textbackslash{}
+id
+257049       NaN      Alvarado          Veracruz                 0.00
+70279        NaN    Cuauhtémoc  Distrito Federal                  nan
+169168       NaN  Zinacantepec    Edo. de México                  nan
+104078       NaN       Metepec    Edo. de México                  nan
+136796       NaN        Toluca    Edo. de México                  nan
+
+               habitaciones              garages                banos  {\ldots}  \textbackslash{}
+id                                                                     {\ldots}
+257049                  nan                 0.00                  nan  {\ldots}
+70279                   nan                  nan                  nan  {\ldots}
+169168                  nan                  nan                  nan  {\ldots}
+104078                  nan                  nan                  nan  {\ldots}
+136796                  nan                  nan                  nan  {\ldots}
+
+                     idzona                  lat                  lng  \textbackslash{}
+id
+257049                  nan                19.07                96.08
+70279             23,837.00                  nan                  nan
+169168                  nan                  nan                  nan
+104078                  nan                  nan                  nan
+136796            51,929.00                  nan                  nan
+
+            fecha             gimnasio       usos\_multiples  \textbackslash{}
+id
+257049 2014-12-14                 0.00                 0.00
+70279  2016-05-19                 0.00                 0.00
+169168 2016-05-09                 0.00                 0.00
+104078 2016-05-09                 0.00                 0.00
+136796 2016-05-10                 0.00                 0.00
+
+                    piscina    escuelas\_cercanas  \textbackslash{}
+id
+257049                 0.00                 0.00
+70279                  0.00                 0.00
+169168                 0.00                 0.00
+104078                 0.00                 0.00
+136796                 0.00                 0.00
+
+        centros\_comerciales\_cercanos               precio
+id
+257049                          0.00           781,704.00
+70279                           0.00         2,450,000.00
+169168                          0.00           702,100.00
+104078                          0.00           500,000.00
+136796                          0.00           510,000.00
+
+[5 rows x 22 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \paragraph{Palabras mas usadas en
+descripciones}\label{palabras-mas-usadas-en-descripciones}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{39}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Busco las descripciones y las agrupo por frecuencia}
+\PY{n}{descripcion} \PY{o}{=} \PY{n}{df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{descripcion}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{dropna}\PY{p}{(}\PY{p}{)}
+\PY{n}{descripcion} \PY{o}{=} \PY{n}{descripcion}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{o}{.}\PY{n}{lower}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+\PY{n}{descripcion} \PY{o}{=} \PY{n}{descripcion}\PY{o}{.}\PY{n}{value\PYZus{}counts}\PY{p}{(}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Junto cada descripcion en un solo string}
+\PY{n}{text} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}
+\PY{k}{for} \PY{n}{w}\PY{p}{,} \PY{n}{q} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{descripcion}\PY{o}{.}\PY{n}{index}\PY{p}{,} \PY{n}{descripcion}\PY{p}{)}\PY{p}{:}
+    \PY{n}{text} \PY{o}{+}\PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{p}{[}\PY{n}{w} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{q}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\PY{n}{text} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{ }\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{join}\PY{p}{(}\PY{p}{[}\PY{n}{s} \PY{k}{for} \PY{n}{s} \PY{o+ow}{in} \PY{n}{text}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{p}{)} \PY{k}{if} \PY{n+nb}{len}\PY{p}{(}\PY{n}{s}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}    
+\PY{n}{wordcloud} \PY{o}{=} \PY{n}{WordCloud}\PY{p}{(}\PY{n}{width}\PY{o}{=}\PY{l+m+mi}{3000}\PY{p}{,} \PY{n}{height}\PY{o}{=}\PY{l+m+mi}{1500}\PY{p}{,} \PY{n}{margin}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{collocations}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{o}{.}\PY{n}{generate}\PY{p}{(}\PY{n}{text}\PY{p}{)}
+ 
+\PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{wordcloud}\PY{p}{,} \PY{n}{interpolation}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{bilinear}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{axis}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{off}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Palabras mas usadas en las descripciones de publicaciones}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{03-exploracion-por-propiedades-provincias_files/03-exploracion-por-propiedades-provincias_90_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}

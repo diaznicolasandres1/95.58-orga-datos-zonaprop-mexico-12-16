@@ -1,0 +1,922 @@
+
+    
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    \usepackage[breakable]{tcolorbox}
+    \tcbset{nobeforeafter} % prevents tcolorboxes being placing in paragraphs
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{02-primera-exploracion}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \newcommand{\prompt}[4]{
+        \llap{{\color{#2}[#3]: #4}}\vspace{-1.25em}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{import} \PY{n+nn}{datetime}
+
+\PY{c+c1}{\PYZsh{} Visualization}
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{import} \PY{n+nn}{descartes}
+\PY{k+kn}{import} \PY{n+nn}{geopandas}
+
+\PY{k+kn}{from} \PY{n+nn}{plot\PYZus{}mexico} \PY{k}{import} \PY{n}{plot\PYZus{}mexico}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Datos de entrenamiento}
+\PY{n}{train} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../data/train.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{low\PYZus{}memory}\PY{o}{=}\PY{k+kc}{False}\PY{p}{,} \PYZbs{}
+                    \PY{n}{encoding} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{utf\PYZhy{}8}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{index\PYZus{}col}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{id}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{parse\PYZus{}dates}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{fecha}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{train}\PY{o}{.}\PY{n}{info}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+<class 'pandas.core.frame.DataFrame'>
+Int64Index: 240000 entries, 254099 to 121958
+Data columns (total 22 columns):
+titulo                        234613 non-null object
+descripcion                   238381 non-null object
+tipodepropiedad               239954 non-null object
+direccion                     186928 non-null object
+ciudad                        239628 non-null object
+provincia                     239845 non-null object
+antiguedad                    196445 non-null float64
+habitaciones                  217529 non-null float64
+garages                       202235 non-null float64
+banos                         213779 non-null float64
+metroscubiertos               222600 non-null float64
+metrostotales                 188533 non-null float64
+idzona                        211379 non-null float64
+lat                           116512 non-null float64
+lng                           116512 non-null float64
+fecha                         240000 non-null datetime64[ns]
+gimnasio                      240000 non-null float64
+usosmultiples                 240000 non-null float64
+piscina                       240000 non-null float64
+escuelascercanas              240000 non-null float64
+centroscomercialescercanos    240000 non-null float64
+precio                        240000 non-null float64
+dtypes: datetime64[ns](1), float64(15), object(6)
+memory usage: 42.1+ MB
+\end{Verbatim}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{train}\PY{o}{.}\PY{n}{sample}\PY{p}{(}\PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{4}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                                                   titulo  \textbackslash{}
+id
+142814                      venta casa olivos residencial
+64871                     casa en condominio horizontal,
+95638   casa en vta av. de los arcos, f. vista del val{\ldots}
+
+                                              descripcion     tipodepropiedad  \textbackslash{}
+id
+142814  residencia en venta con excelentes acabados, l{\ldots}                Casa
+64871   dos plantas, sala, comedor , cocina integral, {\ldots}  Casa en condominio
+95638   casa de 3 niveles, consta de sala, comedor, co{\ldots}                Casa
+
+                                                direccion  \textbackslash{}
+id
+142814                      AV RAMON CORONA 2748 CASA H20
+64871                         Antonio Pliego Villalba 106
+95638   Av. de los Arcos, Fracc. Vista del Valle, Secc{\ldots}
+
+                     ciudad       provincia  antiguedad  habitaciones  \textbackslash{}
+id
+142814              Zapopan         Jalisco         4.0           3.0
+64871          Zinacantepec  Edo. de México         1.0           3.0
+95638   Naucalpan de Juárez  Edo. de México        10.0           3.0
+
+        garages  banos  {\ldots}    idzona  lat  lng      fecha  gimnasio  \textbackslash{}
+id                      {\ldots}
+142814      2.0    4.0  {\ldots}   48193.0  NaN  NaN 2016-02-26       1.0
+64871       3.0    2.0  {\ldots}   53666.0  NaN  NaN 2014-07-22       0.0
+95638       2.0    3.0  {\ldots}  286425.0  NaN  NaN 2015-11-09       0.0
+
+       usosmultiples  piscina  escuelascercanas  centroscomercialescercanos  \textbackslash{}
+id
+142814           1.0      1.0               1.0                         1.0
+64871            0.0      0.0               0.0                         0.0
+95638            0.0      0.0               1.0                         1.0
+
+           precio
+id
+142814  6000000.0
+64871   1550000.0
+95638   2300000.0
+
+[3 rows x 22 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{tipopropiedades} \PY{o}{=} \PY{n}{train}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tipodepropiedad}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{p}{)} \PYZbs{}
+    \PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{ascending}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{o}{.}\PY{n}{to\PYZus{}frame}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cantidad}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{tipopropiedades}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{5}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                               cantidad
+tipodepropiedad
+Casa                             141717
+Apartamento                       57341
+Casa en condominio                19297
+Terreno                            9945
+Local Comercial                    3055
+Oficina comercial                  1741
+Bodega comercial                   1406
+Edificio                           1396
+Terreno comercial                  1326
+Casa uso de suelo                   708
+Quinta Vacacional                   395
+Duplex                              343
+Villa                               340
+Inmuebles productivos urbanos       200
+Rancho                              170
+Local en centro comercial           165
+Departamento Compartido             141
+Otros                               134
+Nave industrial                      76
+Terreno industrial                   31
+Huerta                               20
+Lote                                  5
+Hospedaje                             1
+Garage                                1
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{colorsh} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+\PY{n}{i} \PY{o}{=} \PY{l+m+mi}{10}
+\PY{k}{while} \PY{n}{i} \PY{o}{!=} \PY{l+m+mi}{0}\PY{p}{:}
+    \PY{n}{colorsh}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{l+m+mf}{0.9}\PY{p}{,} \PY{p}{(}\PY{n}{i}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{20}\PY{p}{,} \PY{n}{i}\PY{o}{/}\PY{l+m+mi}{50}\PY{p}{)}\PY{p}{)}
+    \PY{n}{i} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{n}{plt} \PY{o}{=} \PY{n}{tipopropiedades}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{n}{by}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cantidad}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{tail}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cantidad}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{kind} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{barh}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color} \PY{o}{=} \PY{n}{colorsh}\PY{p}{,}\PYZbs{}
+    \PY{n}{figsize} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{30}\PY{p}{,} \PY{l+m+mi}{16}\PY{p}{)}\PY{p}{,} \PY{n}{fontsize} \PY{o}{=} \PY{l+m+mi}{25}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cantidad de propiedades}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize} \PY{o}{=} \PY{l+m+mi}{28}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Tipo de propiedad}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize} \PY{o}{=} \PY{l+m+mi}{28}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{set\PYZus{}title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Cantidad de propiedades publicadas por tipo}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize} \PY{o}{=} \PY{l+m+mi}{35}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{n}{linestyle} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dashed}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{color} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{gray}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{yaxis}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{False}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{02-primera-exploracion_files/02-primera-exploracion_5_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{provincias} \PY{o}{=} \PY{n}{train}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{provincia}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{antiguedad}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{habitaciones}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{garages}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{banos}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PYZbs{}
+                                         \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{metroscubiertos}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{metrostotales}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+\PY{n}{provincias}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cantidad}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{n}{train}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{provincia}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{size}\PY{p}{(}\PY{p}{)}
+\PY{n}{provincias}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{7}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                       antiguedad  habitaciones   garages     banos  \textbackslash{}
+provincia
+Aguascalientes           7.524580      3.096447  1.541806  2.120382
+Baja California Norte    5.788405      2.580032  1.613046  1.365226
+Baja California Sur      2.459770      2.633838  1.684280  1.606195
+Campeche                 3.914573      2.835749  0.944444  1.963351
+Chiapas                  5.412871      3.031926  1.324211  2.206164
+Chihuahua                6.518198      3.039927  1.445773  2.133979
+Coahuila                 6.306214      3.004758  1.538726  2.138187
+Colima                   5.674877      2.790287  1.317982  2.038245
+Distrito Federal        12.189608      2.740684  1.420075  1.986249
+Durango                  4.993980      3.053934  1.467141  1.948014
+Edo. de México          10.027958      2.971764  1.662463  2.079630
+Guanajuato               5.729194      3.021847  1.498307  2.230051
+Guerrero                 7.605657      2.818432  1.328413  2.290984
+Hidalgo                  3.472246      2.877910  1.477477  1.814311
+Jalisco                  6.635517      3.032709  1.530953  2.224935
+Michoacán                7.061213      3.043149  1.382698  1.898866
+Morelos                  6.456293      3.016087  1.749497  2.348330
+Nayarit                  4.677146      2.753648  0.887288  1.886325
+Nuevo León               7.539231      2.935939  1.528709  2.309109
+Oaxaca                   5.404722      2.974916  1.143548  1.854237
+Puebla                   4.545640      2.919214  1.655089  2.251693
+Querétaro                3.701341      2.978442  1.755303  2.402109
+Quintana Roo             4.541362      2.846594  1.585206  2.343427
+San luis Potosí          3.978120      3.009229  1.605968  2.246464
+Sinaloa                  6.149014      2.907653  1.413442  2.032484
+Sonora                   5.942609      2.890869  1.420356  1.890426
+Tabasco                  5.298992      2.925267  1.411339  2.342072
+Tamaulipas               5.550216      2.841031  1.431579  1.953117
+Tlaxcala                 3.688034      2.830311  1.383808  1.548969
+Veracruz                 4.631214      2.931528  1.437143  2.266626
+Yucatán                  3.070534      2.932471  1.836322  2.588393
+Zacatecas                6.397590      3.096386  1.035294  1.797619
+
+                       metroscubiertos  metrostotales  cantidad
+provincia
+Aguascalientes              176.184227     173.284826      1753
+Baja California Norte        94.006675     128.017080      3220
+Baja California Sur         113.391197     182.840849      1700
+Campeche                    164.229592     204.650655       263
+Chiapas                     175.109879     179.228690      1126
+Chihuahua                   199.484038     213.807702      4590
+Coahuila                    198.050117     208.891884      3695
+Colima                      157.389075     178.943596      1008
+Distrito Federal            156.449348     161.503146     58790
+Durango                     178.292810     184.109168      2275
+Edo. de México              179.789885     173.397345     41607
+Guanajuato                  181.124567     172.916734      2860
+Guerrero                    157.243275     169.193662      2678
+Hidalgo                     143.020548     143.103038      2521
+Jalisco                     171.795832     164.194235     21238
+Michoacán                   158.226490     151.027519      2471
+Morelos                     188.357377     209.622986      7337
+Nayarit                     140.882306     143.555000      1352
+Nuevo León                  198.620343     180.023322     15324
+Oaxaca                      148.781879     178.123980       711
+Puebla                      183.225016     170.679735     10421
+Querétaro                   190.836721     193.443813     16988
+Quintana Roo                177.166243     189.256730      4756
+San luis Potosí             182.670485     181.764848      8447
+Sinaloa                     164.417035     175.840000      1806
+Sonora                      168.126433     196.222181      2988
+Tabasco                     183.552326     182.074300       994
+Tamaulipas                  171.271739     181.859500      2303
+Tlaxcala                    133.408575     138.093878       839
+Veracruz                    183.076003     174.073229      5762
+Yucatán                     214.128163     261.063641      7928
+Zacatecas                   164.139535     150.939759        94
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{train}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{provincia}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{8}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+                       antiguedad  habitaciones  garages     banos  \textbackslash{}
+provincia
+Aguascalientes            11633.0        4880.0   2305.0    3329.0
+Baja California Norte     15675.0        8140.0   4723.0    4295.0
+Baja California Sur        3852.0        4172.0   2550.0    2541.0
+Campeche                    779.0         587.0    204.0     375.0
+Chiapas                    5467.0        2944.0   1258.0    2076.0
+Chihuahua                 18805.0       11725.0   5079.0    8378.0
+Coahuila                  19688.0       10105.0   4927.0    7195.0
+Colima                     4608.0        2528.0   1202.0    1812.0
+Distrito Federal         630800.0      147912.0  74091.0  106163.0
+Durango                    8295.0        6172.0   2679.0    3972.0
+Edo. de México           376249.0      115771.0  58261.0   79654.0
+Guanajuato                13286.0        7884.0   3539.0    5729.0
+Guerrero                  18284.0        7156.0   3240.0    5590.0
+Hidalgo                    8007.0        6553.0   3280.0    4133.0
+Jalisco                  119008.0       56187.0  28514.0   41366.0
+Michoacán                 12343.0        6841.0   2829.0    4187.0
+Morelos                   37963.0       20998.0  10434.0   15607.0
+Nayarit                    3868.0        3208.0   1047.0    2207.0
+Nuevo León                85133.0       39368.0  17785.0   29582.0
+Oaxaca                     3205.0        1779.0    709.0    1094.0
+Puebla                    37797.0       27499.0  15058.0   20281.0
+Querétaro                 48569.0       44626.0  24827.0   35311.0
+Quintana Roo              16744.0       11950.0   6065.0    9519.0
+San luis Potosí           18363.0       22172.0  11086.0   16042.0
+Sinaloa                    8418.0        4597.0   2082.0    3191.0
+Sonora                    13668.0        7947.0   2791.0    5193.0
+Tabasco                    4732.0        2466.0   1170.0    1876.0
+Tamaulipas                10279.0        5844.0   2448.0    4041.0
+Tlaxcala                   2589.0        2185.0    923.0    1202.0
+Veracruz                  19377.0       14942.0   7042.0   11281.0
+Yucatán                   15933.0       21539.0  10445.0   18287.0
+Zacatecas                   531.0         257.0     88.0     151.0
+
+                       metroscubiertos  metrostotales        idzona  \textbackslash{}
+provincia
+Aguascalientes                279252.0       278642.0  6.052638e+07
+Baja California Norte         295745.0       382259.0  9.319219e+07
+Baja California Sur           182900.0       275724.0  4.181732e+07
+Campeche                       32189.0        46865.0  4.735278e+06
+Chiapas                       173709.0       172418.0  1.967401e+07
+Chihuahua                     849802.0       855017.0  4.272449e+08
+Coahuila                      679708.0       682032.0  1.081370e+08
+Colima                        141178.0       152281.0  9.487953e+06
+Distrito Federal             8738009.0      6160053.0  3.414342e+11
+Durango                       376911.0       389575.0  8.079526e+07
+Edo. de México               6989152.0      5774305.0  3.762833e+09
+Guanajuato                    471105.0       427796.0  1.567188e+08
+Guerrero                      397511.0       240255.0  1.124759e+08
+Hidalgo                       334096.0       324987.0  1.298161e+08
+Jalisco                      3388501.0      3099002.0  4.356839e+09
+Michoacán                     358383.0       323803.0  1.402506e+08
+Morelos                      1323964.0       988582.0  4.510686e+08
+Nayarit                       175962.0       172266.0  8.015011e+07
+Nuevo León                   2745529.0      2338863.0  8.350819e+09
+Oaxaca                         88674.0       109190.0  5.197181e+07
+Puebla                       1763724.0      1519391.0  1.180868e+09
+Querétaro                    2947664.0      2824860.0  7.494476e+09
+Quintana Roo                  766244.0       667887.0  1.408801e+11
+San luis Potosí              1307738.0      1282351.0  6.898310e+08
+Sinaloa                       260601.0       281344.0  1.503737e+08
+Sonora                        469409.0       527249.0  2.646661e+08
+Tabasco                       157855.0       149483.0  1.022519e+08
+Tamaulipas                    362411.0       341714.0  2.044741e+08
+Tlaxcala                      105793.0       101499.0  8.237048e+07
+Veracruz                      949066.0       870018.0  5.858941e+08
+Yucatán                      1582193.0      1530094.0  7.529827e+08
+Zacatecas                      14116.0        12528.0  9.181983e+06
+
+                                 lat           lng  gimnasio  usosmultiples  \textbackslash{}
+provincia
+Aguascalientes          23883.590271 -1.118017e+05      86.0          110.0
+Baja California Norte   55048.498456 -1.980587e+05      41.0           34.0
+Baja California Sur     24817.258955 -1.153414e+05      11.0            5.0
+Campeche                 2606.028923 -1.238800e+04       4.0            1.0
+Chiapas                  7695.096312 -4.289882e+04      33.0            8.0
+Chihuahua               58946.658029 -2.153591e+05     117.0           27.0
+Coahuila                49453.874068 -1.959385e+05      87.0           24.0
+Colima                  11195.823360 -6.056384e+04      15.0           22.0
+Distrito Federal       647385.955047 -3.304767e+06    4410.0         4044.0
+Durango                 22059.516549 -9.533232e+04      83.0           21.0
+Edo. de México         352783.668552 -1.790318e+06    3066.0         3060.0
+Guanajuato              27970.856567 -1.346094e+05     144.0          107.0
+Guerrero                22118.130161 -1.305396e+05     457.0          367.0
+Hidalgo                 24696.994024 -1.213719e+05     127.0          130.0
+Jalisco                269368.934581 -1.345651e+06    1344.0         1807.0
+Michoacán               17733.837214 -9.118663e+04      66.0           32.0
+Morelos                 53783.020085 -2.815767e+05     364.0          261.0
+Nayarit                 12074.079417 -6.041563e+04      76.0           32.0
+Nuevo León             140231.450069 -5.483775e+05     966.0          422.0
+Oaxaca                   5501.658688 -3.159018e+04       9.0            6.0
+Puebla                  89021.215983 -4.593001e+05     657.0          742.0
+Querétaro              162103.422176 -7.881022e+05     927.0         1154.0
+Quintana Roo            53643.112804 -2.218714e+05     518.0          355.0
+San luis Potosí         75620.303906 -3.456508e+05     192.0           79.0
+Sinaloa                 23787.432370 -1.048916e+05      33.0           37.0
+Sonora                  41181.523128 -1.574986e+05      83.0           27.0
+Tabasco                 10281.451101 -5.264318e+04      35.0           13.0
+Tamaulipas              18070.467609 -7.749851e+04      77.0            4.0
+Tlaxcala                 8342.644874 -4.223162e+04      38.0            3.0
+Veracruz                43762.249155 -2.158869e+05     254.0          157.0
+Yucatán                 53876.569779 -2.293996e+05     668.0          128.0
+Zacatecas                1612.683903 -7.250515e+03       1.0            3.0
+
+                       piscina  escuelascercanas  centroscomercialescercanos  \textbackslash{}
+provincia
+Aguascalientes           168.0             984.0                       854.0
+Baja California Norte     54.0            1517.0                      1520.0
+Baja California Sur       73.0             483.0                       230.0
+Campeche                   7.0              73.0                        59.0
+Chiapas                   32.0             376.0                       234.0
+Chihuahua                 93.0            1212.0                       929.0
+Coahuila                  51.0            1588.0                      1038.0
+Colima                    92.0             385.0                       258.0
+Distrito Federal        2627.0           28118.0                     26185.0
+Durango                   17.0             623.0                       369.0
+Edo. de México          2330.0           22668.0                     21243.0
+Guanajuato               146.0            1186.0                       916.0
+Guerrero                1511.0            1091.0                      1494.0
+Hidalgo                   86.0            1509.0                      1363.0
+Jalisco                 2482.0            9958.0                      9960.0
+Michoacán                 26.0             941.0                       816.0
+Morelos                 3066.0            3076.0                      2676.0
+Nayarit                  224.0             351.0                       323.0
+Nuevo León               819.0            4863.0                      3702.0
+Oaxaca                    22.0             325.0                       231.0
+Puebla                   301.0            5332.0                      5262.0
+Querétaro               2054.0            8177.0                      7084.0
+Quintana Roo            1677.0            2122.0                      1934.0
+San luis Potosí           73.0            1490.0                       882.0
+Sinaloa                  134.0             558.0                       457.0
+Sonora                   140.0             751.0                       623.0
+Tabasco                   74.0             366.0                       225.0
+Tamaulipas                70.0             574.0                       124.0
+Tlaxcala                   3.0             433.0                       280.0
+Veracruz                 581.0            2253.0                      2039.0
+Yucatán                 1923.0            3128.0                      1826.0
+Zacatecas                  0.0              35.0                        30.0
+
+                             precio
+provincia
+Aguascalientes         2.589512e+09
+Baja California Norte  2.471162e+09
+Baja California Sur    2.067970e+09
+Campeche               4.131514e+08
+Chiapas                2.166566e+09
+Chihuahua              8.007396e+09
+Coahuila               5.562104e+09
+Colima                 1.543631e+09
+Distrito Federal       2.041015e+11
+Durango                2.753635e+09
+Edo. de México         1.149379e+11
+Guanajuato             5.339504e+09
+Guerrero               6.825531e+09
+Hidalgo                3.291293e+09
+Jalisco                5.028508e+10
+Michoacán              3.653383e+09
+Morelos                1.680238e+10
+Nayarit                1.929021e+09
+Nuevo León             4.164692e+10
+Oaxaca                 1.120193e+09
+Puebla                 2.395166e+10
+Querétaro              3.642412e+10
+Quintana Roo           1.142851e+10
+San luis Potosí        1.622183e+10
+Sinaloa                2.952036e+09
+Sonora                 4.433343e+09
+Tabasco                2.286677e+09
+Tamaulipas             3.661003e+09
+Tlaxcala               9.069534e+08
+Veracruz               1.088896e+10
+Yucatán                1.614157e+10
+Zacatecas              1.366523e+08
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{mexstates} \PY{o}{=} \PY{n}{geopandas}\PY{o}{.}\PY{n}{read\PYZus{}file}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{../data/estados\PYZus{}mexico.shp}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{;}
+\PY{n}{mexstates}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{9}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+            ADMIN\_NAME  OBJECTID FIPS\_ADMIN GMI\_ADMIN FIPS\_CNTRY GMI\_CNTRY  \textbackslash{}
+0       Aguascalientes      1057       MX01   MEX-AGS         MX       MEX
+1      Baja California      2304       MX02   MEX-BCN         MX       MEX
+2  Baja California Sur      2327       MX03   MEX-BCS         MX       MEX
+3             Campeche      1086       MX04   MEX-CMP         MX       MEX
+4              Chiapas      1182       MX05   MEX-CHP         MX       MEX
+
+  CNTRY\_NAME  POP\_ADMIN TYPE\_ENG TYPE\_LOC      SQKM      SQMI COLOR\_MAP  \textbackslash{}
+0     Mexico     782890    State   Estado   5609.14   2165.69         4
+1     Mexico    1806829    State   Estado  72725.41  28079.28         7
+2     Mexico     345682    State   Estado  72278.30  27906.65         8
+3     Mexico     582193    State   Estado  50234.82  19395.66         6
+4     Mexico    3524501    State   Estado  73771.48  28483.17        10
+
+   Shape\_Leng  Shape\_Area                                           geometry
+0    2.807425    0.489324  POLYGON ((-101.8462066646057 22.01176071158773{\ldots}
+1   19.898878    6.831258  (POLYGON ((-115.0172424311931 31.9544296261265{\ldots}
+2   26.273035    6.500703  (POLYGON ((-112.7232818599697 27.9997406003486{\ldots}
+3   13.547013    4.294054  (POLYGON ((-90.37896728551169 20.8632316585143{\ldots}
+4   12.835232    6.223150  (POLYGON ((-92.10794067392283 15.4375972749944{\ldots}
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{columnas} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{antiguedad}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{habitaciones}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{garages}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{banos}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{metroscubiertos}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{metrostotales}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cantidad}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{mexstates}\PY{p}{[}\PY{n}{columnas}\PY{p}{]} \PY{o}{=} \PY{n}{provincias}\PY{o}{.}\PY{n}{reset\PYZus{}index}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{n}{columnas}\PY{p}{]}
+\PY{n}{mexstates}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, boxrule=.5pt, size=fbox, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{10}{\hspace{3.5pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+            ADMIN\_NAME  OBJECTID FIPS\_ADMIN GMI\_ADMIN FIPS\_CNTRY GMI\_CNTRY  \textbackslash{}
+0       Aguascalientes      1057       MX01   MEX-AGS         MX       MEX
+1      Baja California      2304       MX02   MEX-BCN         MX       MEX
+2  Baja California Sur      2327       MX03   MEX-BCS         MX       MEX
+3             Campeche      1086       MX04   MEX-CMP         MX       MEX
+4              Chiapas      1182       MX05   MEX-CHP         MX       MEX
+
+  CNTRY\_NAME  POP\_ADMIN TYPE\_ENG TYPE\_LOC  {\ldots}  Shape\_Leng  Shape\_Area  \textbackslash{}
+0     Mexico     782890    State   Estado  {\ldots}    2.807425    0.489324
+1     Mexico    1806829    State   Estado  {\ldots}   19.898878    6.831258
+2     Mexico     345682    State   Estado  {\ldots}   26.273035    6.500703
+3     Mexico     582193    State   Estado  {\ldots}   13.547013    4.294054
+4     Mexico    3524501    State   Estado  {\ldots}   12.835232    6.223150
+
+                                            geometry  antiguedad  \textbackslash{}
+0  POLYGON ((-101.8462066646057 22.01176071158773{\ldots}    7.524580
+1  (POLYGON ((-115.0172424311931 31.9544296261265{\ldots}    5.788405
+2  (POLYGON ((-112.7232818599697 27.9997406003486{\ldots}    2.459770
+3  (POLYGON ((-90.37896728551169 20.8632316585143{\ldots}    3.914573
+4  (POLYGON ((-92.10794067392283 15.4375972749944{\ldots}    5.412871
+
+   habitaciones   garages     banos  metroscubiertos  metrostotales  cantidad
+0      3.096447  1.541806  2.120382       176.184227     173.284826      1753
+1      2.580032  1.613046  1.365226        94.006675     128.017080      3220
+2      2.633838  1.684280  1.606195       113.391197     182.840849      1700
+3      2.835749  0.944444  1.963351       164.229592     204.650655       263
+4      3.031926  1.324211  2.206164       175.109879     179.228690      1126
+
+[5 rows x 23 columns]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\hspace{4pt}}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{plot\PYZus{}mexico}\PY{p}{(}\PY{n}{mexstates}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{cantidad}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{02-primera-exploracion_files/02-primera-exploracion_10_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
